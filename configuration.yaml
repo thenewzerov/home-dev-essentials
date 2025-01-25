@@ -1,0 +1,12 @@
+APPLICATIONS:
+  GLOBAL:
+    BASE_URL: example.com
+  GRAFANA:
+    HEADER_VALUE: example
+  CERT_MANAGER:
+    ORG: example
+  BACKSTAGE:
+    CLUSTER_NAME: example
+  KEYCLOAK:
+    ADMIN_USER: example
+    ADMIN_PASSWORD: example

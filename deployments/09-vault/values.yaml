@@ -1,0 +1,6 @@
+global:
+  tlsDisable: true
+metrics:
+  enabled: true
+ui:
+  enabled: true

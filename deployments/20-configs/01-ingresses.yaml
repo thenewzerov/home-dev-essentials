@@ -1,0 +1,277 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: dashboard-ingress
+  namespace: kubernetes-dashboard
+  annotations:
+    cert-manager.io/cluster-issuer: "rack-ca-issuer"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - dashboard.${APPLICATIONS.GLOBAL.BASE_URL}
+      secretName: dashboard-tls
+  rules:
+    - host: dashboard.${APPLICATIONS.GLOBAL.BASE_URL}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: kubernetes-dashboard-kong-proxy
+                port:
+                  number: 443
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ittools-ingress
+  namespace: ittools
+  annotations:
+    cert-manager.io/cluster-issuer: "rack-ca-issuer"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - tools.${APPLICATIONS.GLOBAL.BASE_URL}
+      secretName: ittools-tls
+  rules:
+    - host: tools.${APPLICATIONS.GLOBAL.BASE_URL}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: it-tools-service
+                port:
+                  number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: grafana-ingress
+  namespace: grafana
+  annotations:
+    cert-manager.io/cluster-issuer: "rack-ca-issuer"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - grafana.${APPLICATIONS.GLOBAL.BASE_URL}
+      secretName: grafana-tls
+  rules:
+    - host: grafana.${APPLICATIONS.GLOBAL.BASE_URL}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: prometheus-grafana
+                port:
+                  number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: prometheus-ingress
+  namespace: prometheus
+  annotations:
+    cert-manager.io/cluster-issuer: "rack-ca-issuer"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - prometheus.${APPLICATIONS.GLOBAL.BASE_URL}
+      secretName: prometheus-tls
+  rules:
+    - host: prometheus.${APPLICATIONS.GLOBAL.BASE_URL}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: prometheus-kube-prometheus-prometheus
+                port:
+                  number: 9090
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: alloy-ingress
+  namespace: alloy
+  annotations:
+    cert-manager.io/cluster-issuer: "rack-ca-issuer"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - alloy.${APPLICATIONS.GLOBAL.BASE_URL}
+      secretName: alloy-tls
+  rules:
+    - host: alloy.${APPLICATIONS.GLOBAL.BASE_URL}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: grafana-alloy
+                port:
+                  number: 12345
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: vault-ingress
+  namespace: vault
+  annotations:
+    cert-manager.io/cluster-issuer: "rack-ca-issuer"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - vault.${APPLICATIONS.GLOBAL.BASE_URL}
+      secretName: vault-tls
+  rules:
+    - host: vault.${APPLICATIONS.GLOBAL.BASE_URL}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: vault-ui
+                port:
+                  number: 8200
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: backstage-ingress
+  namespace: backstage
+  annotations:
+    cert-manager.io/cluster-issuer: "rack-ca-issuer"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - backstage.${APPLICATIONS.GLOBAL.BASE_URL}
+      secretName: backstage-tls
+  rules:
+    - host: backstage.${APPLICATIONS.GLOBAL.BASE_URL}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: backstage
+                port:
+                  number: 7007
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: argo-workflows-ingress
+  namespace: argo
+  annotations:
+    cert-manager.io/cluster-issuer: "rack-ca-issuer"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - argo.${APPLICATIONS.GLOBAL.BASE_URL}
+      secretName: argo-tls
+  rules:
+    - host: argo.${APPLICATIONS.GLOBAL.BASE_URL}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: argo-server
+                port:
+                  number: 2746
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: keycloak-ingress
+  namespace: keycloak
+  annotations:
+    cert-manager.io/cluster-issuer: "rack-ca-issuer"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - keycloak.${APPLICATIONS.GLOBAL.BASE_URL}
+      secretName: keycloak-tls
+  rules:
+    - host: keycloak.${APPLICATIONS.GLOBAL.BASE_URL}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: keycloak
+                port:
+                  number: 8443
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nats-ui-ingress
+  namespace: nats
+  annotations:
+    cert-manager.io/cluster-issuer: "rack-ca-issuer"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - nats.${APPLICATIONS.GLOBAL.BASE_URL}
+      secretName: keycloak-tls
+  rules:
+    - host: nats.${APPLICATIONS.GLOBAL.BASE_URL}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: nats-ui-nui
+                port:
+                  number: 31311
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: openproject-ingress
+  namespace: openproject
+  annotations:
+    cert-manager.io/cluster-issuer: "rack-ca-issuer"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - openproject.${APPLICATIONS.GLOBAL.BASE_URL}
+      secretName: keycloak-tls
+  rules:
+    - host: openproject.${APPLICATIONS.GLOBAL.BASE_URL}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: openproject
+                port:
+                  number: 8080

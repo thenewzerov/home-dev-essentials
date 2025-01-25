@@ -1,0 +1,36 @@
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: selfsigned-cluster-issuer
+  namespace: cert-manager
+spec:
+  selfSigned: {}
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: rack-selfsigned-ca
+  namespace: cert-manager
+spec:
+  isCA: true
+  commonName: cert-manager.${APPLICATIONS.GLOBAL.BASE_URL}
+  secretName: root-secret
+  subject:
+    organizations:
+      - ${APPLICATIONS.CERT_MANAGER.ORG}
+  privateKey:
+    algorithm: ECDSA
+    size: 256
+  issuerRef:
+    name: selfsigned-cluster-issuer
+    kind: ClusterIssuer
+    group: cert-manager.io
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: rack-ca-issuer
+  namespace: cert-manager
+spec:
+  ca:
+    secretName: root-secret

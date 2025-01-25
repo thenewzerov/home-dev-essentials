@@ -1,0 +1,21 @@
+postgresql:
+  enabled: true
+backstage:
+  appConfig:
+    kubernetes:
+    serviceLocatorMethod:
+      type: 'multiTenant'
+    clusterLocatorMethods:
+      - type: 'config'
+        clusters:
+          - url: http://127.0.0.1:9999
+            name: ${APPLICATIONS.BACKSTAGE.CLUSTER_NAME}
+            authProvider: 'serviceAccount'
+            skipTLSVerify: true
+            skipMetricsLookup: true
+            # extraAppConfig:
+# - filename: app-config.extra.yaml
+
+#   configMapRef: backstage-extras-config
+serviceAccount:
+  create: true
