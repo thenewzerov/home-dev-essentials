@@ -43,3 +43,6 @@ grafana:
           queries:
             - name: 'Sample Query'
               query: 'sum(rate(traces_spanmetrics_latency_bucket{$$__tags}[5m]))'
+prometheus:
+  prometheusSpec:
+    serviceMonitorSelectorNilUsesHelmValues: false

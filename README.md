@@ -94,6 +94,27 @@ The configs below work for a home environment where you don't really care if you
 
 Add your values in the `configuration.yaml` file. Replace all the existing values with your own.
 
+### Istio Configuration
+
+I have this setup to deploy with Microk8s.  There's a config for the Istio CNI install you might need to change if you're not using MicroK8s.
+
+
+In the `deployments/01-deploy.bat` and `deployments/01-deploy.sh` files, change this line:
+```bash
+helm upgrade --install istio-cni istio/cni -n istio-system --set profile=ambient --set global.platform=microk8s --wait
+```
+
+and remove the `global.platform flag.
+
+```bash
+helm upgrade --install istio-cni istio/cni -n istio-system --set profile=ambient --wait
+```
+
+### Istio Metrics
+
+Still haven't managed to get Istio metrics working.  Or not all of them, with Ambient mode.  If anyone knows what's going on, any help would be appreciated!
+
+
 ### Windows
 ```
 ./windows/deploy.bat
