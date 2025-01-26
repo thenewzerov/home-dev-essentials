@@ -250,3 +250,28 @@ spec:
                 name: openproject
                 port:
                   number: 8080
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: kiali-ingress
+  namespace: kiali
+  annotations:
+    cert-manager.io/cluster-issuer: "rack-ca-issuer"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - kiali.${APPLICATIONS.GLOBAL.BASE_URL}
+      secretName: keycloak-tls
+  rules:
+    - host: kiali.${APPLICATIONS.GLOBAL.BASE_URL}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: kiali
+                port:
+                  number: 20001

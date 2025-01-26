@@ -1,0 +1,19 @@
+auth:
+  strategy: anonymous
+
+external_services:
+  grafana:
+    enabled: true
+    external_url: "https://grafana.${APPLICATIONS.GLOBAL.BASE_URL}"
+    internal_url: "http://prometheus-grafana.grafana.svc.cluster.local"
+    HealthCheckUrl: "http://prometheus-grafana.grafana.svc.cluster.local/api/health"
+  prometheus:
+    enabled: true
+    url: "http://prometheus-kube-prometheus-prometheus.prometheus.svc.cluster.local:9090"
+  tracing:
+    enabled: true
+    internal_url: "http://tempo.tempo.svc.cluster.local:16686"
+    provider: "tempo"
+    use_grpc: false
+    tempo_config:
+      org_id: ${APPLICATIONS.GRAFANA.HEADER_VALUE}

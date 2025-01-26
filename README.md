@@ -120,7 +120,7 @@ I'm using `*.example.com` to match the default configuration.yaml file.  Update 
 ```
 alloy.example.com
 argo.example.com
-backstage.example.com
+kiali.example.com
 dashboard.example.com
 grafana.example.com
 keycloak.example.com
@@ -252,8 +252,6 @@ Feel free to delete it if you don't want it.
     https://github.com/Joxit/docker-registry-ui
 * Package Registry
     TODO:  Pick one
-* Service Mesh
-    Because what's Kubernetes without a service mesh?
 
 ## Development
 
