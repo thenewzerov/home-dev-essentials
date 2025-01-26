@@ -4,6 +4,7 @@ metadata:
   name: ittools
   labels:
     name: ittools
+    istio.io/dataplane-mode: ambient
 ---
 apiVersion: apps/v1
 kind: Deployment

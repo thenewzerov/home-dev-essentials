@@ -25,45 +25,46 @@ are running something that will be public in any way, shape or form.
 ## What's Been Added So Far
 
 ### Installed in Kubernetes
+* Istio
+    * https://istio.io/latest/docs/overview/
+    * We install Istio in Ambient mode.
 * Kubernetes Dashboard
-	https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/
+	* https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/
 * Prometheus Stack from prometheus-community/kube-prometheus-stack
 	* Prometheus
-		https://prometheus.io/
+		* https://prometheus.io/
 	* Prometheus Node Exporter
-		https://github.com/prometheus/node_exporter
+		* https://github.com/prometheus/node_exporter
 	* Kube State Metrics
-		https://github.com/kubernetes/kube-state-metrics
+		* https://github.com/kubernetes/kube-state-metrics
 	* Grafana
-		https://grafana.com/docs/grafana/latest/
+		* https://grafana.com/docs/grafana/latest/
 * Grafana Loki
-    https://grafana.com/docs/loki/latest/
+    * https://grafana.com/docs/loki/latest/
 * Grafana Tempo
-    https://grafana.com/docs/tempo/latest/
+    * https://grafana.com/docs/tempo/latest/
 * Grafana Alloy
-    https://grafana.com/docs/alloy/latest/
+    * https://grafana.com/docs/alloy/latest/
 * Nginx Ingress
-    https://www.nginx.com/
+    * https://www.nginx.com/
 * Cert Manager
-    https://cert-manager.io/
+    * https://cert-manager.io/
 * IT-Tools
-    https://it-tools.tech/slugify-string
+    * https://it-tools.tech/slugify-string
 * telemetrygen
-    https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/cmd/telemetrygen
+    * https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/cmd/telemetrygen
 * HashiCorp Vault
-    https://developer.hashicorp.com/vault
+    * https://developer.hashicorp.com/vault
 * Keycloak
-    https://www.keycloak.org/
-* Backstage
-    https://backstage.io/
+    * https://www.keycloak.org/
 * OpenProject
-	https://www.openproject.org/
+	* https://www.openproject.org/
 * Argo Workflows
-	https://argoproj.github.io/workflows/
+	* https://argoproj.github.io/workflows/
 * Nats
-	https://nats.io/about/
+	* https://nats.io/about/
 * Nui (NATS GUI)
-	https://natsnui.app/
+	* https://natsnui.app/
 
 
 ## Prerequisites
@@ -135,6 +136,12 @@ vault.example.com
 
 Not everything installed has a section here.  This is mostly just capturing what configs are needed.
 
+### Istio
+
+Istio is installed in ambient mode, that way I don't have to deal with sidecars.
+This is mostly just to try out the ambient mode features.
+
+
 ### Dashboard
 
 To access the dashboard, navigate to https://dashboard.example.com
@@ -205,11 +212,6 @@ TODO: Check the configuration on this one.  Might not be pulling correctly?  Nee
 ### Vault
 
 You will need to run through the vault setup.  The ui is available at https://vault.example.com
-
-### Backstage
-
-Backstage is installed, but just using their default image.  It's not working atm.
-This will be updated later, but leaving it in now as a placeholder.
 
 ### Keycloak
 

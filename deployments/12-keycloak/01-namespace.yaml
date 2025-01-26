@@ -4,3 +4,4 @@ metadata:
   name: keycloak
   labels:
     name: keycloak
+    istio.io/dataplane-mode: ambient

@@ -1,7 +1,7 @@
 @echo off
 setlocal
 
-./tooling/build-image.bat
+call ./tooling/build-image.bat
 docker run --rm --name home-dev-essentials -v %USERPROFILE%\.kube\config:/root/.kube/config -v .:/app/ home-dev-essentials ./linux/configure.sh ./configuration.yaml
 
 REM Go through every subfolder of the temp/deployments directory

@@ -4,6 +4,7 @@ metadata:
   name: prometheus
   labels:
     name: prometheus
+    istio.io/dataplane-mode: ambient
 ---
 apiVersion: v1
 kind: Namespace
@@ -11,3 +12,4 @@ metadata:
   name: grafana
   labels:
     name: grafana
+    istio.io/dataplane-mode: ambient

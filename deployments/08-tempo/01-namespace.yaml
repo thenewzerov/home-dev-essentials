@@ -4,3 +4,4 @@ metadata:
   name: tempo
   labels:
     name: tempo
+    istio.io/dataplane-mode: ambient

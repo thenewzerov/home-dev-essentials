@@ -152,31 +152,6 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: backstage-ingress
-  namespace: backstage
-  annotations:
-    cert-manager.io/cluster-issuer: "rack-ca-issuer"
-spec:
-  ingressClassName: nginx
-  tls:
-    - hosts:
-        - backstage.${APPLICATIONS.GLOBAL.BASE_URL}
-      secretName: backstage-tls
-  rules:
-    - host: backstage.${APPLICATIONS.GLOBAL.BASE_URL}
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: backstage
-                port:
-                  number: 7007
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
   name: argo-workflows-ingress
   namespace: argo
   annotations:

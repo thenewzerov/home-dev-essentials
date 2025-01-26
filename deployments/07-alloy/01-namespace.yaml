@@ -4,3 +4,4 @@ metadata:
   name: alloy
   labels:
     name: alloy
+    istio.io/dataplane-mode: ambient
