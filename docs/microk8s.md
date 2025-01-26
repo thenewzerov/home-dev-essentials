@@ -2,6 +2,30 @@
 
 Because there's a bunch of stuff I'm going to forget if I don't write it down, here's how to setup UFW to allow Microk8s forwarding and HAProxy.
 
+## Reset MicroK8s
+
+You can reset MicroK8s to a clean version with the following command:
+```
+sudo microk8s reset
+```
+
+## Install and Configure MicroK8s
+
+These commands will install MicroK8s and install some of the addons used by this repo.
+
+```
+sudo snap install microk8s --classic
+microk8s enable dn
+microk8s enable hostpath-storage
+```
+## Setting Up Remote Access
+
+I'm assuming you know how to open the ports needed for remotely accessing your cluster.
+
+To copy your config from MicroK8s to your standard kube config file:
+```
+microk8s config > ~/.kube/config
+```
 
 ### Edit the UFW config files to allow forwarding
 
