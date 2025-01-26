@@ -5,7 +5,8 @@ metadata:
   name: keycloak
   namespace: keycloak
   labels:
-    app: keycloak
+    app.kubernetes.io/name: keycloak
+    app.kubernetes.io/version: 26.1.0
 spec:
   ports:
     - name: http
@@ -15,7 +16,8 @@ spec:
       port: 8443
       targetPort: 8443
   selector:
-    app: keycloak
+    app.kubernetes.io/name: keycloak
+    app.kubernetes.io/version: 26.1.0
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -23,16 +25,19 @@ metadata:
   name: keycloak
   namespace: keycloak
   labels:
-    app: keycloak
+    app.kubernetes.io/name: keycloak
+    app.kubernetes.io/version: 26.1.0
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: keycloak
+      app.kubernetes.io/name: keycloak
+      app.kubernetes.io/version: 26.1.0
   template:
     metadata:
       labels:
-        app: keycloak
+        app.kubernetes.io/name: keycloak
+        app.kubernetes.io/version: 26.1.0
     spec:
       containers:
         - name: keycloak

@@ -7,12 +7,12 @@ grafana:
       disable_signout_menu: true
     auth.anonymous:
       enabled: true
-      org_role: Editor
+      org_role: Admin
   namespaceOverride: grafana
   additionalDataSources:
     - name: loki
       basicAuth: false
-      editable: false
+      editable: true
       type: loki
       url: http://loki-gateway.loki.svc.cluster.local
       jsonData:

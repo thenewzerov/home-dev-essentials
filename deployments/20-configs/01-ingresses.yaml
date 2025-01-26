@@ -255,7 +255,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: kiali-ingress
-  namespace: kiali
+  namespace: istio-system
   annotations:
     cert-manager.io/cluster-issuer: "rack-ca-issuer"
 spec:
