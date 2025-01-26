@@ -4,3 +4,4 @@ metadata:
   name: argo
   labels:
     name: argo
+    istio.io/dataplane-mode: ambient

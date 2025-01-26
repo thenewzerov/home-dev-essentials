@@ -8,4 +8,4 @@ REM Update the Helm repos
 helm repo update
 
 REM Deploy the dashboard.
-helm upgrade --install -n tempo tempo grafana/tempo
+helm upgrade --install -n tempo --values ./deployments/08-tempo/values.yaml tempo grafana/tempo

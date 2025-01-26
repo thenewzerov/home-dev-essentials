@@ -4,6 +4,7 @@ metadata:
   name: ittools
   labels:
     name: ittools
+    istio.io/dataplane-mode: ambient
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -11,18 +12,21 @@ metadata:
   name: it-tools
   namespace: ittools
   labels:
-    app: it-tools
+    app.kubernetes.io/name: it-tools
+    app.kubernetes.io/version: "1.0"
 spec:
   selector:
     matchLabels:
-      app: it-tools
+      app.kubernetes.io/name: it-tools
+      app.kubernetes.io/version: "1.0"
   replicas: 1
   strategy:
     type: RollingUpdate
   template:
     metadata:
       labels:
-        app: it-tools
+        app.kubernetes.io/name: it-tools
+        app.kubernetes.io/version: "1.0"
     spec:
       containers:
         - name: it-tools
@@ -39,7 +43,8 @@ metadata:
   namespace: ittools
 spec:
   selector:
-    app: it-tools
+    app.kubernetes.io/name: it-tools
+    app.kubernetes.io/version: "1.0"
   ports:
     - protocol: TCP
       port: 80

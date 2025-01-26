@@ -4,3 +4,4 @@ metadata:
   name: nats
   labels:
     name: nats
+    istio.io/dataplane-mode: ambient

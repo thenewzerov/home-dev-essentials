@@ -4,6 +4,7 @@ metadata:
   name: telemetrygen
   labels:
     name: telemetrygen
+    istio.io/dataplane-mode: ambient
 ---
 apiVersion: batch/v1
 kind: CronJob
