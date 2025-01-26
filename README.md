@@ -1,84 +1,98 @@
 # Home Dev Essentials
 
-This is a collection of tools and setup scripts to make the setting 
-up of a home Kubernetes dev environment as painless as possible.
+This is a collection of tools and setup scripts to make setting up a home Kubernetes dev environment as painless as possible.
 
-This project has focused on projects that can be self hosted, allowing
-you to keep as much of the development lifecycle within your home network
-as possible.
+This project focuses on self-hosted projects, allowing you to keep as much of the development lifecycle within your home network as possible.
 
-I've tried to cover as many of the basics as poosible, as well as
-including some useful tools.  Most of what I have included are things I 
-have found myself wanting access to at some point, just to make development simpler.
-That being said, this is mostly tailored to meet MY needs.  Feel free to fork this 
-repo or make a pull request to make it work for you.
+I've tried to cover as many of the basics as possible, as well as include some useful tools. Most of what I have included are things I have found myself wanting access to at some point, just to make development simpler. That being said, this is mostly tailored to meet **my** needs. Feel free to fork this repo or make a pull request to make it work for you.
 
-Big Disclaimer here:
+**Big Disclaimer:**
 
+**DO NOT RUN THIS IN PRODUCTION**
 
-DO NOT RUN THIS IN PRODUCTION
+The configs below work for a home environment where you don't really care if you lose data. A lot of the settings below are not appropriate if you are running something that will be public in any way, shape, or form.
 
-The configs below work for a home environment where you don't really care
-if you lose data.  A lot of the settings below are not appropriate if you
-are running something that will be public in any way, shape or form.
+## What this README Covers:
+
+- [What's Been Added So Far](#whats-been-added-so-far)
+  - [Installed in Kubernetes](#installed-in-kubernetes)
+    - [Istio](#istio)
+    - [Kubernetes Dashboard](#kubernetes-dashboard)
+    - [Prometheus Stack](#prometheus-stack)
+      - [Prometheus](#prometheus)
+      - [Prometheus Node Exporter](#prometheus-node-exporter)
+      - [Kube State Metrics](#kube-state-metrics)
+      - [Grafana](#grafana)
+    - [Grafana Loki](#grafana-loki)
+    - [Grafana Tempo](#grafana-tempo)
+    - [Grafana Alloy](#grafana-alloy)
+    - [Nginx Ingress](#nginx-ingress)
+    - [Cert Manager](#cert-manager)
+    - [IT-Tools](#it-tools)
+    - [telemetrygen](#telemetrygen)
+    - [HashiCorp Vault](#hashicorp-vault)
+    - [Keycloak](#keycloak)
+    - [OpenProject](#openproject)
+    - [Argo Workflows](#argo-workflows)
+    - [Nats](#nats)
+    - [Nui (NATS GUI)](#nui-nats-gui)
 
 ## What's Been Added So Far
 
 ### Installed in Kubernetes
-* Istio
-    * https://istio.io/latest/docs/overview/
-    * We install Istio in Ambient mode.
-* Kubernetes Dashboard
-	* https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/
-* Prometheus Stack from prometheus-community/kube-prometheus-stack
-	* Prometheus
-		* https://prometheus.io/
-	* Prometheus Node Exporter
-		* https://github.com/prometheus/node_exporter
-	* Kube State Metrics
-		* https://github.com/kubernetes/kube-state-metrics
-	* Grafana
-		* https://grafana.com/docs/grafana/latest/
-* Grafana Loki
-    * https://grafana.com/docs/loki/latest/
-* Grafana Tempo
-    * https://grafana.com/docs/tempo/latest/
-* Grafana Alloy
-    * https://grafana.com/docs/alloy/latest/
-* Nginx Ingress
-    * https://www.nginx.com/
-* Cert Manager
-    * https://cert-manager.io/
-* IT-Tools
-    * https://it-tools.tech/slugify-string
-* telemetrygen
-    * https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/cmd/telemetrygen
-* HashiCorp Vault
-    * https://developer.hashicorp.com/vault
-* Keycloak
-    * https://www.keycloak.org/
-* OpenProject
-	* https://www.openproject.org/
-* Argo Workflows
-	* https://argoproj.github.io/workflows/
-* Nats
-	* https://nats.io/about/
-* Nui (NATS GUI)
-	* https://natsnui.app/
 
+- **Istio**
+  - [Istio Documentation](https://istio.io/latest/docs/overview/)
+  - We install Istio in Ambient mode.
+- **Kubernetes Dashboard**
+  - [Kubernetes Dashboard Documentation](https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/)
+- **Prometheus Stack from prometheus-community/kube-prometheus-stack**
+  - **Prometheus**
+    - [Prometheus Documentation](https://prometheus.io/)
+  - **Prometheus Node Exporter**
+    - [Prometheus Node Exporter Documentation](https://github.com/prometheus/node_exporter)
+  - **Kube State Metrics**
+    - [Kube State Metrics Documentation](https://github.com/kubernetes/kube-state-metrics)
+  - **Grafana**
+    - [Grafana Documentation](https://grafana.com/docs/grafana/latest/)
+- **Grafana Loki**
+    - [Grafana Loki Documentation](https://grafana.com/docs/loki/latest/)
+- **Grafana Tempo**
+    - [Grafana Tempo Documentation](https://grafana.com/docs/tempo/latest/)
+- **Grafana Alloy**
+    - [Grafana Alloy Documentation](https://grafana.com/docs/alloy/latest/)
+- **Nginx Ingress**
+    - [Nginx Documentation](https://www.nginx.com/)
+- **Cert Manager**
+    - [Cert Manager Documentation](https://cert-manager.io/)
+- **IT-Tools**
+    - [IT-Tools Documentation](https://it-tools.tech/slugify-string)
+- **telemetrygen**
+    - [telemetrygen Documentation](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/cmd/telemetrygen)
+- **HashiCorp Vault**
+    - [HashiCorp Vault Documentation](https://developer.hashicorp.com/vault)
+- **Keycloak**
+    - [Keycloak Documentation](https://www.keycloak.org/)
+- **OpenProject**
+    - [OpenProject Documentation](https://www.openproject.org/)
+- **Argo Workflows**
+    - [Argo Workflows Documentation](https://argoproj.github.io/workflows/)
+- **Nats**
+    - [Nats Documentation](https://nats.io/about/)
+- **Nui (NATS GUI)**
+    - [Nui Documentation](https://natsnui.app/)
 
 ## Prerequisites
 
-1. Docker is installed on your system.  Make sure you can build images locally.
+1. Docker is installed on your system. Make sure you can build images locally.
 2. Kubectl is installed on your system and connected to your target cluster.
 3. Helm is installed and configured correctly (pointing to your cluster in #2)
-
 
 ## How to Use This Repo
 
 ### Configurations
 
-Add your values in the `configuration.yaml` file.  Replace all the existing values with your own.
+Add your values in the `configuration.yaml` file. Replace all the existing values with your own.
 
 ### Windows
 ```
@@ -90,32 +104,29 @@ Add your values in the `configuration.yaml` file.  Replace all the existing valu
 ./linux/deploy.bat
 ```
 
-
-## Preparing For Instillation
+## Preparing For Installation
 
 ### Kubernetes
 
-This repo assumes you have a Kubernetes cluster setup, and that your kubectl is pointing to that cluster.
-I am running MicroK8s.
+This repo assumes you have a Kubernetes cluster setup, and that your kubectl is pointing to that cluster. I am running MicroK8s.
 
 ### Load Balancing / DNS
 
-I do NOT assume you have setup a load balancer.  Please set one up beforehand.
+I do NOT assume you have setup a load balancer. Please set one up beforehand.
 
 I run Pi-hole and HAProxy with a Layer 4 proxy to MicroK8s. The setup commands for that are below.
 
 ### Helm
 
-Install Helm.  https://helm.sh/
-
+Install Helm. [Helm Documentation](https://helm.sh/)
 
 ## Post Install Info
 
-### DNS Routes to Setup.
+### DNS Routes to Setup
 
-Set up the following DNS routes to point to your proxy.  Or load balancer.   Whatever you have setup.
+Set up the following DNS routes to point to your proxy. Or load balancer. Whatever you have setup.
 
-I'm using `*.example.com` to match the default configuration.yaml file.  Update to match your configuration.
+I'm using `*.example.com` to match the default configuration.yaml file. Update to match your configuration.
 
 ```
 alloy.example.com
@@ -131,16 +142,15 @@ tools.example.com
 vault.example.com
 ```
 
+There's a file that's generated in the `deployments\21-bookmarks` folder that will have links to all the sites, with your configured urls.
 
 ## Individual Tools Details
 
-Not everything installed has a section here.  This is mostly just capturing what configs are needed.
+Not everything installed has a section here. This is mostly just capturing what configs are needed.
 
 ### Istio
 
-Istio is installed in ambient mode, that way I don't have to deal with sidecars.
-This is mostly just to try out the ambient mode features.
-
+Istio is installed in ambient mode, that way I don't have to deal with sidecars. This is mostly just to try out the ambient mode features.
 
 ### Dashboard
 
@@ -189,29 +199,25 @@ You will also need to add an HTTP Header.
 
 They Header is `X-Scope-OrgID`, the value needs to match your `APPLICATIONS.GRAFANA.HEADER_VALUE` config.
 
-After this is completed, you should be able to view the logs through the `Explore` funciton in Grafana.
+After this is completed, you should be able to view the logs through the `Explore` function in Grafana.
 
 ### Alloy
 
 Alloy is setup as a logs/metrics/traces collector.  
 
-It should grab all the logs from your pods and make them available in Grafana through Loki.
-Traces sent to it will be forwarded to Tempo.
-
+It should grab all the logs from your pods and make them available in Grafana through Loki. Traces sent to it will be forwarded to Tempo.
 
 ### Tempo
 
-Tempo is used to store your traces.  The Otlp endpoint is `tempo.tempo.svc.cluster.local:4317`.  From here, configure Grafana to pull them.
-
+Tempo is used to store your traces. The Otlp endpoint is `tempo.tempo.svc.cluster.local:4317`. From here, configure Grafana to pull them.
 
 ### Prometheus
 
-TODO: Check the configuration on this one.  Might not be pulling correctly?  Need to deploy a REAL test app.
-
+TODO: Check the configuration on this one. Might not be pulling correctly? Need to deploy a REAL test app.
 
 ### Vault
 
-You will need to run through the vault setup.  The ui is available at https://vault.example.com
+You will need to run through the vault setup. The ui is available at https://vault.example.com
 
 ### Keycloak
 
@@ -229,13 +235,11 @@ To connect NUI to your nats server:
 
 ### Openproject
 
-When loading, will have the default username/password.  Will need to be reset when you first login.
+When loading, will have the default username/password. Will need to be reset when you first login.
 
 ### Telemetrygen
 
-There is a sample telemetry generator app that's installed, mostly to test the observability stuff.
-Feel free to delete it if you don't want it.
-
+There is a sample telemetry generator app that's installed, mostly to test the observability stuff. Feel free to delete it if you don't want it.
 
 ## Wishlist for Future Things to Add (or automate)
 * Gitlab (with runners?)

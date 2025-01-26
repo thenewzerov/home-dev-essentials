@@ -1,11 +1,12 @@
-## Running with Microk8s
+## Running with MicroK8s
 
-Because there's a bunch of stuff I'm going to forget if I don't write it down, here's how to setup UFW to allow Microk8s forwarding and HAProxy.
+Because there's a bunch of stuff I'm going to forget if I don't write it down, here's how to set up UFW to allow MicroK8s forwarding and HAProxy.
 
 ## Reset MicroK8s
 
 You can reset MicroK8s to a clean version with the following command:
-```
+
+```bash
 sudo microk8s reset
 ```
 
@@ -13,7 +14,7 @@ sudo microk8s reset
 
 These commands will install MicroK8s and install some of the addons used by this repo.
 
-```
+```bash
 sudo snap install microk8s --classic
 microk8s enable dn
 microk8s enable hostpath-storage
@@ -23,7 +24,7 @@ microk8s enable hostpath-storage
 I'm assuming you know how to open the ports needed for remotely accessing your cluster.
 
 To copy your config from MicroK8s to your standard kube config file:
-```
+```bash
 microk8s config > ~/.kube/config
 ```
 
@@ -32,12 +33,12 @@ microk8s config > ~/.kube/config
 You'll have to do this step AFTER you have the Ingress installed to get the ports.
 
 If `UFW` is not running by default, you may have to enable it before you run the following steps.
-```
+```bash
 sudo ufw enable
 ```
 
 Get the nodePorts from the ingress.
-```
+```bash
 kubectl get service -n ingress-nginx ingress-nginx-controller
 NAME                       TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)                      AGE
 ingress-nginx-controller   NodePort   192.168.1.107   <none>        80:31824/TCP,443:30478/TCP   22h
@@ -45,17 +46,17 @@ ingress-nginx-controller   NodePort   192.168.1.107   <none>        80:31824/TCP
 
 
 You will need to allow forwarding in UFW.
-```
+```bash
 sudo ufw allow 80     # HTTP Traffic
 sudo ufw allow 443    # HTTPS Traffic
-sudo ufw allow 31824  # HTTP Nodeport from above
-sudo ufw allow 30478  # HTTPS Nodeport from above
+sudo ufw allow 31824  # HTTP Nodeport from above (This may not be needed. try without first)
+sudo ufw allow 30478  # HTTPS Nodeport from above (This may not be needed. try without first)
 sudo ufw allow 6443   # Kubernetes API Server
 ```
 
 
 Finally, restart UFW
-```
+```bash
 sudo ufw disable && sudo ufw enable
 ```
 
@@ -67,7 +68,7 @@ If you need a proxy (to make DNS easy using the correct ports), you can install 
 
 Install haproxy
 
-```
+```bash
 sudo apt-get install haproxy
 ```
 
@@ -125,6 +126,6 @@ backend secure-backend
 ```
 
 Finally, restart HAProxy
-```
+```bash
 sudo service haproxy restart
 ```
