@@ -41,6 +41,8 @@ done
 # Create a "temp" folder in the current directory.
 mkdir -p temp
 mkdir -p temp/deployments
+mkdir -p temp/secrets
+mkdir -p temp/applications
 
 # Re-create the structure of the "deployments" folder and copy the existing files over.
 if [ -d "deployments" ]; then
@@ -50,11 +52,28 @@ else
     echo "Deployments folder not found."
 fi
 
+# Re-create the structure of the "deployments" folder and copy the existing files over.
+if [ -d "secrets" ]; then
+    cp -r secrets/* temp/secrets/
+    echo "Secrets folder structure and files copied to temp folder."
+else
+    echo "Secrets folder not found."
+fi
+
+# Re-create the structure of the "deployments" folder and copy the existing files over.
+if [ -d "applications" ]; then
+    cp -r applications/* temp/applications/
+    echo "Applications folder structure and files copied to temp folder."
+else
+    echo "Applications folder not found."
+fi
+
 # Replace instances of ${KEY} with the value in the temp/deployments folder.
 for key in "${!config[@]}"
 do
-    find temp/deployments -type f -exec sed -i "s|\${$key}|${config[$key]}|g" {} +
+    find temp -type f -exec sed -i "s|\${$key}|${config[$key]}|g" {} +
+    find docs/bookmarks.md -type f -exec sed -i "s|\${$key}|${config[$key]}|g" {} +
 done
 
 # Replace instances of './deployments' with './temp/deployments' in the temp/deployments folder.
-find temp/deployments -type f -exec sed -i "s|./deployments|./temp/deployments|g" {} +
+find temp -type f -exec sed -i "s|./deployments|./temp/deployments|g" {} +

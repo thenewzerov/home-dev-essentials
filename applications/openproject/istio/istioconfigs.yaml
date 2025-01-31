@@ -1,0 +1,11 @@
+apiVersion: "security.istio.io/v1"
+kind: "PeerAuthentication"
+metadata:
+  name: "openproject-postgres"
+  namespace: "openproject"
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: openproject
+  mtls:
+    mode: DISABLE

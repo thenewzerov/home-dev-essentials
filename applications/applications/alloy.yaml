@@ -1,0 +1,33 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: "alloy"
+  namespace: argocd
+spec:
+  project: infra-project
+  sources:
+  - repoURL: 'https://grafana.github.io/helm-charts'
+    chart: alloy
+    targetRevision: 0.11.0
+    helm:
+      valueFiles:
+      - $values/alloy/values.yaml
+  - repoURL: 'http://gitea-http.gitea.svc.cluster.local:3000/${APPLICATIONS.GITEA.ADMIN.USERNAME}/infra.git'
+    targetRevision: HEAD
+    path: alloy
+    ref: values
+  - repoURL: 'http://gitea-http.gitea.svc.cluster.local:3000/${APPLICATIONS.GITEA.ADMIN.USERNAME}/infra.git'
+    targetRevision: HEAD
+    path: alloy/config
+  - repoURL: 'http://gitea-http.gitea.svc.cluster.local:3000/${APPLICATIONS.GITEA.ADMIN.USERNAME}/infra.git'
+    targetRevision: HEAD
+    path: alloy/routes
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: alloy
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=false

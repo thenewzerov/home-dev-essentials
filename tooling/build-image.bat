@@ -1,4 +1,3 @@
-:: filepath: /c:/Development/Projects/home-dev-essentials/tooling/build-image.bat
 @echo off
 
 :: Build the Docker image and tag it as "home-dev-essentials"

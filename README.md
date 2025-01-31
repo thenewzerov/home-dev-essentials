@@ -12,12 +12,15 @@ I've tried to cover as many of the basics as possible, as well as include some u
 
 The configs below work for a home environment where you don't really care if you lose data. A lot of the settings below are not appropriate if you are running something that will be public in any way, shape, or form.
 
+I also turn off TLS on EVERYTHING.
+
 ## What this README Covers:
 
+- [Quickstart](#quickstart)
 - [What's Been Added So Far](#whats-been-added-so-far)
   - [Installed in Kubernetes](#installed-in-kubernetes)
     - [Istio](#istio)
-    - [Kubernetes Dashboard](#kubernetes-dashboard)
+    - [ArgoCD](#argocd)
     - [Prometheus Stack](#prometheus-stack)
       - [Prometheus](#prometheus)
       - [Prometheus Node Exporter](#prometheus-node-exporter)
@@ -37,6 +40,28 @@ The configs below work for a home environment where you don't really care if you
     - [Nats](#nats)
     - [Nui (NATS GUI)](#nui-nats-gui)
 
+
+## Quickstart
+
+### Setup Configs
+Fill out the configuration.yaml
+
+### Run the Install
+For Windows:
+
+```
+.\windows\deploy.bat
+```
+
+For Linux:
+```
+./linux/deploy.bat
+```
+
+### Finalize Secrets
+
+Run the command found in the `\temp\secrets\keycloak.ops` file.
+
 ## What's Been Added So Far
 
 ### Installed in Kubernetes
@@ -44,8 +69,8 @@ The configs below work for a home environment where you don't really care if you
 - **Istio**
   - [Istio Documentation](https://istio.io/latest/docs/overview/)
   - We install Istio in Ambient mode.
-- **Kubernetes Dashboard**
-  - [Kubernetes Dashboard Documentation](https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/)
+- **ArgoCD**
+  - [ArgoCD Documentation](https://argo-cd.readthedocs.io/en/stable/)
 - **Prometheus Stack from prometheus-community/kube-prometheus-stack**
   - **Prometheus**
     - [Prometheus Documentation](https://prometheus.io/)
@@ -82,11 +107,40 @@ The configs below work for a home environment where you don't really care if you
 - **Nui (NATS GUI)**
     - [Nui Documentation](https://natsnui.app/)
 
+
+## Instillation Process
+
 ## Prerequisites
 
 1. Docker is installed on your system. Make sure you can build images locally.
 2. Kubectl is installed on your system and connected to your target cluster.
 3. Helm is installed and configured correctly (pointing to your cluster in #2)
+
+## Preparing For Installation
+
+### Kubernetes
+
+This repo assumes you have a Kubernetes cluster setup, and that your kubectl is pointing to that cluster.
+
+### Load Balancing
+
+I do NOT assume you have setup a load balancer. Please set one up beforehand.
+
+When deploying the Gateway, we run a patch operation to set the NodePorts.
+
+Your node will have the ports `30080` and `30443` available for ingress traffic.
+
+### DNS
+
+You MUST have a DNS configuration setup.
+
+Actually, maybe not.  You might be able to do this by using an IP address.
+Honestly, I've never tried.  Make a pull request to update this if you try it and it works!
+
+### Helm
+
+Install Helm. [Helm Documentation](https://helm.sh/)
+
 
 ## How to Use This Repo
 
@@ -99,47 +153,34 @@ Add your values in the `configuration.yaml` file. Replace all the existing value
 I have this setup to deploy with Microk8s.  There's a config for the Istio CNI install you might need to change if you're not using MicroK8s.
 
 
-In the `deployments/01-deploy.bat` and `deployments/01-deploy.sh` files, change this line:
+In the `deployments/01-deploy.ops` file, change the lines to remove the following flag:
 ```bash
-helm upgrade --install istio-cni istio/cni -n istio-system --set profile=ambient --set global.platform=microk8s --wait
+--set global.platform=microk8s
 ```
 
-and remove the `global.platform flag.
+### Deploy the Application
 
-```bash
-helm upgrade --install istio-cni istio/cni -n istio-system --set profile=ambient --wait
-```
-
-### Istio Metrics
-
-Still haven't managed to get Istio metrics working.  Or not all of them, with Ambient mode.  If anyone knows what's going on, any help would be appreciated!
-
-
-### Windows
+#### Windows
 ```
 ./windows/deploy.bat
 ```
 
-### Linux
+#### Linux
 ```
 ./linux/deploy.bat
 ```
 
-## Preparing For Installation
+The commit to the `gitea` repo seems to be 50/50 on if it works.
+If it fails, run the commit again.
 
-### Kubernetes
+There's a script to do this in `.\temp\deployments\finalize\` folder.
 
-This repo assumes you have a Kubernetes cluster setup, and that your kubectl is pointing to that cluster. I am running MicroK8s.
+Execute either `push-repo.bat` or `push-repo.sh`.
 
-### Load Balancing / DNS
 
-I do NOT assume you have setup a load balancer. Please set one up beforehand.
+## Finalize Install
 
-I run Pi-hole and HAProxy with a Layer 4 proxy to MicroK8s. The setup commands for that are below.
-
-### Helm
-
-Install Helm. [Helm Documentation](https://helm.sh/)
+Run the command found in the generated file at `\temp\secrets\keycloak.ops`.
 
 ## Post Install Info
 
@@ -151,9 +192,8 @@ I'm using `*.example.com` to match the default configuration.yaml file. Update t
 
 ```
 alloy.example.com
-argo.example.com
+argocd.example.com
 kiali.example.com
-dashboard.example.com
 grafana.example.com
 keycloak.example.com
 nats.example.com
@@ -161,6 +201,7 @@ openproject.example.com
 prometheus.example.com
 tools.example.com
 vault.example.com
+workflows.example.com
 ```
 
 There's a file that's generated in the `deployments\21-bookmarks` folder that will have links to all the sites, with your configured urls.
@@ -173,20 +214,21 @@ Not everything installed has a section here. This is mostly just capturing what 
 
 Istio is installed in ambient mode, that way I don't have to deal with sidecars. This is mostly just to try out the ambient mode features.
 
-### Dashboard
+I include the annotations to add all the created namespaces to Istio (unless otherwised noted).
 
-To access the dashboard, navigate to https://dashboard.example.com
+This is also our Gateway.  We're using the new Kubernetes Gateway API to handle ingress traffic, and allowing Istio to do it's thing.
 
-To login, run the following command to get a token:
+### Cert Manager
 
-```
-kubectl get secret admin-user -n kubernetes-dashboard -o jsonpath={".data.token"} | base64 -d
-```
+`cert-manager` is used to create all our certificates.  These are all self-signed wildcard certs.
 
-If running on Windows, run the following command, then copy the values from the `token` field and base64 decode it using the tools link above.
+### ArgoCD
 
-```
-kubectl get secret admin-user -n kubernetes-dashboard -o yaml
+We install ArgoCD.
+
+To get the default password to login, run this command:
+```bash
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
 ```
 
 ### IT-Tools
@@ -267,8 +309,6 @@ There is a sample telemetry generator app that's installed, mostly to test the o
     https://about.gitlab.com/install/
 * Drone CI (if not using gitlab runners)
 	https://www.drone.io/
-* Argo CD
-	https://argo-cd.readthedocs.io/en/stable/
 * Kubernetes
     https://kubernetes.io/
 * Container Repository

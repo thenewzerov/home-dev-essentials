@@ -1,10 +1,17 @@
+KUBERNETES:
+  CLUSTER_NAME: example
 APPLICATIONS:
   GLOBAL:
     BASE_URL: example.com
+  GITEA:
+    ADMIN:
+      USERNAME: example
+      PASSWORD: example
   GRAFANA:
     HEADER_VALUE: example
   CERT_MANAGER:
     ORG: example
   KEYCLOAK:
-    ADMIN_USER: example
-    ADMIN_PASSWORD: example
+    ADMIN:
+      USERNAME: example
+      PASSWORD: example
