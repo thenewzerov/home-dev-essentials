@@ -1,0 +1,33 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: "nats"
+  namespace: argocd
+spec:
+  project: infra-project
+  sources:
+  - repoURL: 'https://nats-io.github.io/k8s/helm/charts/'
+    chart: nats
+    targetRevision: 1.2.10
+  - repoURL: 'https://nats-nui.github.io/k8s/helm/charts'
+    chart: nui
+    targetRevision: 0.1.2
+    helm:
+      valueFiles:
+      - $values/nats/values.yaml
+  - repoURL: 'http://gitea-http.gitea.svc.cluster.local:3000/${APPLICATIONS.GITEA.ADMIN.USERNAME}/infra.git'
+    targetRevision: HEAD
+    path: nats
+    ref: values
+  - repoURL: 'http://gitea-http.gitea.svc.cluster.local:3000/${APPLICATIONS.GITEA.ADMIN.USERNAME}/infra.git'
+    targetRevision: HEAD
+    path: nats/routes
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: nats
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=false

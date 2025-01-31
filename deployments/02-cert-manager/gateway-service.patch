@@ -1,0 +1,10 @@
+spec:
+  ports:
+  - appProtocol: tcp
+    name: status-port
+    nodePort: 30080
+    port: 15021
+  - appProtocol: https
+    name: https
+    nodePort: 30443
+    port: 443

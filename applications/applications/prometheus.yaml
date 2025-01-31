@@ -1,0 +1,34 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: "prometheus"
+  namespace: argocd
+spec:
+  project: infra-project
+  sources:
+  - repoURL: 'https://prometheus-community.github.io/helm-charts'
+    chart: kube-prometheus-stack
+    targetRevision: 68.4.0
+    helm:
+      valueFiles:
+      - $values/prometheus/values.yaml
+  - repoURL: 'http://gitea-http.gitea.svc.cluster.local:3000/${APPLICATIONS.GITEA.ADMIN.USERNAME}/infra.git'
+    targetRevision: HEAD
+    path: prometheus
+    ref: values
+  - repoURL: 'http://gitea-http.gitea.svc.cluster.local:3000/${APPLICATIONS.GITEA.ADMIN.USERNAME}/infra.git'
+    targetRevision: HEAD
+    path: prometheus/routes
+  - repoURL: 'http://gitea-http.gitea.svc.cluster.local:3000/${APPLICATIONS.GITEA.ADMIN.USERNAME}/infra.git'
+    targetRevision: HEAD
+    path: prometheus/monitors
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: prometheus
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=false
+      - ServerSideApply=true

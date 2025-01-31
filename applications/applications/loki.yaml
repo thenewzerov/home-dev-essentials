@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: "loki"
+  namespace: argocd
+spec:
+  project: infra-project
+  sources:
+  - repoURL: 'https://grafana.github.io/helm-charts'
+    chart: loki
+    targetRevision: 6.25.0
+    helm:
+      valueFiles:
+      - $values/loki/values.yaml
+  - repoURL: 'http://gitea-http.gitea.svc.cluster.local:3000/${APPLICATIONS.GITEA.ADMIN.USERNAME}/infra.git'
+    targetRevision: HEAD
+    path: loki
+    ref: values
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: loki
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=false
