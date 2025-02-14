@@ -98,14 +98,14 @@ Run the command found in the `\temp\secrets\keycloak.ops` file.
     - [HashiCorp Vault Documentation](https://developer.hashicorp.com/vault)
 - **Keycloak**
     - [Keycloak Documentation](https://www.keycloak.org/)
-- **OpenProject**
-    - [OpenProject Documentation](https://www.openproject.org/)
 - **Argo Workflows**
     - [Argo Workflows Documentation](https://argoproj.github.io/workflows/)
 - **Nats**
     - [Nats Documentation](https://nats.io/about/)
 - **Nui (NATS GUI)**
     - [Nui Documentation](https://natsnui.app/)
+- **PGAdmin**
+    - [PGAdmin Documentation](https://www.pgadmin.org/)
 
 
 ## Instillation Process
@@ -197,11 +197,11 @@ kiali.example.com
 grafana.example.com
 keycloak.example.com
 nats.example.com
-openproject.example.com
 prometheus.example.com
 tools.example.com
 vault.example.com
 workflows.example.com
+pgadmin.example.com
 ```
 
 There's a file that's generated in the `deployments\21-bookmarks` folder that will have links to all the sites, with your configured urls.
@@ -295,10 +295,6 @@ To connect NUI to your nats server:
 3. Name can be whatever
 4. Host is going to be `nats-headless.nats.svc.cluster.local`
 5. No auth other settings needed.
-
-### Openproject
-
-When loading, will have the default username/password. Will need to be reset when you first login.
 
 ### Telemetrygen
 

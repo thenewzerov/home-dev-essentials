@@ -38,7 +38,7 @@ spec:
       containers:
         - name: keycloak
           image: quay.io/keycloak/keycloak:26.1.0
-          args: ["start-dev"]
+          args: ["start-dev", "--proxy-headers", "xforwarded"]
           env:
             - name: KC_BOOTSTRAP_ADMIN_USERNAME
               valueFrom:
@@ -54,6 +54,8 @@ spec:
               value: "edge"
             - name: KC_HEALTH_ENABLED
               value: "true"
+            - name: KEYCLOAK_FRONTEND_URL
+              value: "https://keycloak.${APPLICATIONS.GLOBAL.BASE_URL}"
           ports:
             - name: http
               containerPort: 8080
@@ -84,3 +86,11 @@ spec:
       backendRefs:
         - name: keycloak
           port: 8080
+      filters:
+      - type: RequestHeaderModifier
+        requestHeaderModifier:
+          set: 
+            - name: X-Forwarded-For
+              value: "x-forwarded-for"
+            - name: X-Forwarded-Proto
+              value: "https"
