@@ -15,3 +15,7 @@ APPLICATIONS:
     ADMIN:
       USERNAME: example
       PASSWORD: example
+  PGADMIN:
+    DEFAULT:
+      EMAIL: example
+      PASSWORD: example
