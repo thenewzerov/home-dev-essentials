@@ -218,6 +218,8 @@ I include the annotations to add all the created namespaces to Istio (unless oth
 
 This is also our Gateway.  We're using the new Kubernetes Gateway API to handle ingress traffic, and allowing Istio to do it's thing.
 
+I've enabled the use to `TCPRoute` from the Kubernetes Gateway API as part of the install.
+
 ### Cert Manager
 
 `cert-manager` is used to create all our certificates.  These are all self-signed wildcard certs.
@@ -300,12 +302,20 @@ To connect NUI to your nats server:
 
 There is a sample telemetry generator app that's installed, mostly to test the observability stuff. Feel free to delete it if you don't want it.
 
+
+### Vault Secrets Operator
+
+Vault Secrets Operator is installed.
+
+After Vault has been initialized, you can follow the setup instructions here:
+
+https://developer.hashicorp.com/vault/tutorials/kubernetes/vault-secrets-operator#configure-vault
+
+
 ## Wishlist for Future Things to Add (or automate)
-* Gitlab (with runners?)
-    https://about.gitlab.com/install/
-* Drone CI (if not using gitlab runners)
-	https://www.drone.io/
-* Kubernetes
+* Gitea Runners
+    https://docs.gitea.com/usage/actions/overview
+* Kubernetes Automated Install
     https://kubernetes.io/
 * Container Repository
     https://hub.docker.com/_/registry
@@ -313,6 +323,7 @@ There is a sample telemetry generator app that's installed, mostly to test the o
     https://github.com/Joxit/docker-registry-ui
 * Package Registry
     TODO:  Pick one
+* Add Cert Manager to Applications.
 
 ## Development
 
