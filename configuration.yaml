@@ -11,10 +11,6 @@ APPLICATIONS:
     HEADER_VALUE: example
   CERT_MANAGER:
     ORG: example
-  KEYCLOAK:
-    ADMIN:
-      USERNAME: example
-      PASSWORD: example
   PGADMIN:
     DEFAULT:
       EMAIL: example
