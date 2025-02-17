@@ -43,19 +43,38 @@ spec:
             - name: KC_BOOTSTRAP_ADMIN_USERNAME
               valueFrom:
                 secretKeyRef:
-                  key:  username
+                  key:  KC_BOOTSTRAP_ADMIN_USERNAME
                   name: keycloak-admin-secret
             - name: KC_BOOTSTRAP_ADMIN_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  key:  password
+                  key:  KC_BOOTSTRAP_ADMIN_PASSWORD
                   name: keycloak-admin-secret
             - name: KC_PROXY
               value: "edge"
             - name: KC_HEALTH_ENABLED
               value: "true"
             - name: KEYCLOAK_FRONTEND_URL
-              value: "https://keycloak.${APPLICATIONS.GLOBAL.BASE_URL}"
+              value: "https://keycloak.${APPLICATIONS.GLOBAL.BASE_URL}
+            - name: KC_DB
+              value: postgres
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: POSTGRES_DB
+            - name: KC_DB_URL
+              value: jdbc:postgresql://postgres/$(POSTGRES_DB)
+            - name: KC_DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: POSTGRES_USER
+            - name: KC_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: POSTGRES_PASSWORD
           ports:
             - name: http
               containerPort: 8080

@@ -17,15 +17,14 @@ I also turn off TLS on EVERYTHING.
 ## What this README Covers:
 
 - [Quickstart](#quickstart)
+  - [Setup Configs](#setup-configs)
+  - [Run the Install](#run-the-install)
+  - [Finalize Secrets](#finalize-secrets)
 - [What's Been Added So Far](#whats-been-added-so-far)
   - [Installed in Kubernetes](#installed-in-kubernetes)
     - [Istio](#istio)
     - [ArgoCD](#argocd)
     - [Prometheus Stack](#prometheus-stack)
-      - [Prometheus](#prometheus)
-      - [Prometheus Node Exporter](#prometheus-node-exporter)
-      - [Kube State Metrics](#kube-state-metrics)
-      - [Grafana](#grafana)
     - [Grafana Loki](#grafana-loki)
     - [Grafana Tempo](#grafana-tempo)
     - [Grafana Alloy](#grafana-alloy)
@@ -35,10 +34,44 @@ I also turn off TLS on EVERYTHING.
     - [telemetrygen](#telemetrygen)
     - [HashiCorp Vault](#hashicorp-vault)
     - [Keycloak](#keycloak)
-    - [OpenProject](#openproject)
     - [Argo Workflows](#argo-workflows)
     - [Nats](#nats)
     - [Nui (NATS GUI)](#nui-nats-gui)
+    - [PGAdmin](#pgadmin)
+- [Installation Process](#installation-process)
+  - [Prerequisites](#prerequisites)
+  - [Preparing For Installation](#preparing-for-installation)
+    - [Kubernetes](#kubernetes)
+    - [Load Balancing](#load-balancing)
+    - [DNS](#dns)
+    - [Helm](#helm)
+- [How to Use This Repo](#how-to-use-this-repo)
+  - [Configurations](#configurations)
+  - [Istio Configuration](#istio-configuration)
+  - [Deploy the Application](#deploy-the-application)
+    - [Windows](#windows)
+    - [Linux](#linux)
+- [Finalize Install](#finalize-install)
+- [Post Install Info](#post-install-info)
+  - [DNS Routes to Setup](#dns-routes-to-setup)
+- [Individual Tools Details](#individual-tools-details)
+  - [Istio](#istio-1)
+  - [Cert Manager](#cert-manager-1)
+  - [ArgoCD](#argocd-1)
+  - [IT-Tools](#it-tools-1)
+  - [Grafana](#grafana)
+  - [Loki](#loki)
+  - [Alloy](#alloy)
+  - [Tempo](#tempo)
+  - [Prometheus](#prometheus)
+  - [Vault](#vault)
+  - [Keycloak](#keycloak-1)
+  - [NATS](#nats-1)
+  - [Telemetrygen](#telemetrygen-1)
+  - [Vault Secrets Operator](#vault-secrets-operator)
+- [Creating Secrets and Deploying Them With Vault Secrets Operator](#creating-secrets-and-deploying-them-with-vault-secrets-operator)
+- [Wishlist for Future Things to Add (or automate)](#wishlist-for-future-things-to-add-or-automate)
+- [Development](#development)
 
 
 ## Quickstart
@@ -60,7 +93,7 @@ For Linux:
 
 ### Finalize Secrets
 
-Run the command found in the `\temp\secrets\keycloak.ops` file.
+See the section on [Creating Vault Secrets](### Creating Secrets and Deploying Them With Vault Secrets Operator)
 
 ## What's Been Added So Far
 
@@ -180,7 +213,9 @@ Execute either `push-repo.bat` or `push-repo.sh`.
 
 ## Finalize Install
 
-Run the command found in the generated file at `\temp\secrets\keycloak.ops`.
+Run the commands to setup Vault and create the secrets for Keycloak.
+
+Simplified instructions are here:  [Creating Secrets and Deploying Them With Vault Secrets Operator](#creating-secrets-and-deploying-them-with-vault-secrets-operator)
 
 ## Post Install Info
 
@@ -312,6 +347,66 @@ After Vault has been initialized, you can follow the setup instructions here:
 https://developer.hashicorp.com/vault/tutorials/kubernetes/vault-secrets-operator#configure-vault
 
 
+## Creating Secrets and Deploying Them With Vault Secrets Operator
+
+This is how you create the secrets needed for applications, and have them automatically created in Kubernetes with the Vault Secrets Operator.
+
+Keycloak will fail to start until you set this up.  But it also forces you to make the Vault deployment healthy, as it requires you to unlock it.
+
+1. Login to vault.
+
+2. Create a new Authentication Method.
+    * Type should be Kubernetes.
+    * Being lazy and naming it `kubernetes`
+
+3. Create a `Kubernetes` type secret engine.  Call it `kubernetes`.
+    * Create a role in the secrets engine.
+    * Select `Generate entire Kubernetes object chain`
+    * Name it `vault`
+    * Type will be `ClusterRole`
+    * Allowed Kubernetes Namespaces set to `*`
+
+4. In the `kubernetes` Authentication Method, add a role.
+    * Name it `keycloak`
+    * Audience should be `vault`
+    * Bound service account names, add `keycloak`
+    * Bound service account namespaces, add `keycloak`
+    * Under the `Tokens` dropdown, scroll down to `Generated Token's Policies`
+    * Add `keycloak-postgres`.  We'll set this up later.
+
+5. Create a new KV Secrets Engine. We'll use the `keycloak` deployment as an example.  Name the Secrets Engine `keycloak`.
+
+6. Create a new `Secret` inside the `keycloak` secrets engine.
+    * Name it `postgres`
+    * Add the following secret data to it:
+        * POSTGRES_DB
+        * POSTGRES_PASSWORD
+        * POSTGRES_USER
+
+7. Create a new `Secret` inside the `keycloak` secrets engine.
+    * Name it `keycloak-admin`
+    * Add the following secret data to it:
+        * KC_BOOTSTRAP_ADMIN_PASSWORD
+        * KC_BOOTSTRAP_ADMIN_USERNAME
+    * These will be your credentials to login to Keycloak.
+
+8. Create a new `Policy`.  Call it `keycloak-postgres`. Add this policy:
+    ```
+    path "/keycloak/data/*" {
+    capabilities = ["read", "list"]
+    }
+    ```
+9. Finally, create your Service Account, VaultAuth, and VaultStaticSecret.
+    * See `/applications/keycloak/secrets.yaml` for an example.
+
+
+### Creating Your Own Secrets
+If you want to create additional secrets for different namespaces, begin from step 4.
+
+Change values as appropriate.  For the most part, you can use the `/applications/keycloak/secrets.yaml` file as a template.
+
+
+
 ## Wishlist for Future Things to Add (or automate)
 * Gitea Runners
     https://docs.gitea.com/usage/actions/overview
@@ -324,6 +419,15 @@ https://developer.hashicorp.com/vault/tutorials/kubernetes/vault-secrets-operato
 * Package Registry
     TODO:  Pick one
 * Add Cert Manager to Applications.
+
+There's also a few things that still need to be taken care of as part of this project:
+
+* Move as many secrets as possible to Vault.
+    * Gitea  
+        * That secret is needed before Vault is setup. Bootstrap paradox.
+    * PGAdmin
+        * Just lazy, didn't want to create a super-long readme.
+
 
 ## Development
 
