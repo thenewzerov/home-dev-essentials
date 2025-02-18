@@ -14,7 +14,7 @@ grafana:
       basicAuth: false
       editable: true
       type: loki
-      url: http://loki-gateway.loki.svc.cluster.local
+      url: http://loki.loki.svc.cluster.local:3100
       jsonData:
         httpHeaderName1: 'X-Scope-OrgID'
       secureJsonData:

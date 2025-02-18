@@ -21,7 +21,7 @@ spec:
                 - '--rate'
                 - '5.0'
                 - '--otlp-endpoint'
-                - 'grafana-alloy.alloy.svc.cluster.local:4317'
+                - 'alloy.alloy.svc.cluster.local:4317'
           restartPolicy: OnFailure
 ---
 apiVersion: batch/v1
@@ -47,7 +47,7 @@ spec:
                 - '1.0'
                 - '--otlp-insecure'
                 - '--otlp-endpoint'
-                - 'grafana-alloy.alloy.svc.cluster.local:4317'
+                - 'alloy.alloy.svc.cluster.local:4317'
           restartPolicy: OnFailure
 ---
 apiVersion: batch/v1
@@ -73,5 +73,5 @@ spec:
                 - '5.0'
                 - '--otlp-insecure'
                 - '--otlp-endpoint'
-                - 'grafana-alloy.alloy.svc.cluster.local:4317'
+                - 'alloy.alloy.svc.cluster.local:4317'
           restartPolicy: OnFailure

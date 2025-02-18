@@ -200,7 +200,7 @@ In the `deployments/01-deploy.ops` file, change the lines to remove the followin
 
 #### Linux
 ```
-./linux/deploy.bat
+./linux/deploy.sh
 ```
 
 The commit to the `gitea` repo seems to be 50/50 on if it works.
@@ -288,11 +288,13 @@ kubectl get secret --namespace grafana prometheus-grafana -o jsonpath="{.data.ad
 
 Once Loki has been deployed, you need to connect it to Grafana.
 
+This should already be done for you, but in case something goes wrong and you need to re-connect it:
+
 In Grafana, add a new `Data Source` of type `Loki`.
 
 This is your connection URL:
 ```
-http://loki-gateway.loki.svc.cluster.local
+http://loki.loki.svc.cluster.local:3100
 ```
 
 You will also need to add an HTTP Header.  
