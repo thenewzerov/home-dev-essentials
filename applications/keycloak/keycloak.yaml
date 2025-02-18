@@ -55,7 +55,7 @@ spec:
             - name: KC_HEALTH_ENABLED
               value: "true"
             - name: KEYCLOAK_FRONTEND_URL
-              value: "https://keycloak.${APPLICATIONS.GLOBAL.BASE_URL}
+              value: "https://keycloak.${APPLICATIONS.GLOBAL.BASE_URL}"
             - name: KC_DB
               value: postgres
             - name: POSTGRES_DB
@@ -98,6 +98,26 @@ spec:
   hostnames:
     - keycloak.${APPLICATIONS.GLOBAL.BASE_URL}
   rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /auth
+      backendRefs:
+        - name: keycloak
+          port: 8080
+      filters:
+      - type: RequestHeaderModifier
+        requestHeaderModifier:
+          set: 
+            - name: X-Forwarded-For
+              value: "x-forwarded-for"
+            - name: X-Forwarded-Proto
+              value: "https"
+      - type: URLRewrite
+        urlRewrite:
+            path:
+              type: ReplacePrefixMatch
+              replacePrefixMatch: /
     - matches:
         - path:
             type: PathPrefix
