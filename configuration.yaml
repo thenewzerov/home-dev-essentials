@@ -1,5 +1,3 @@
-KUBERNETES:
-  CLUSTER_NAME: example
 APPLICATIONS:
   GLOBAL:
     BASE_URL: example.com
