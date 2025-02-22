@@ -14,6 +14,13 @@ spec:
         gitea:
           admin:
             existingSecret: gitea-admin-secret
+          config:
+            server:
+              ROOT_URL: https://gitea.${APPLICATIONS.GLOBAL.BASE_URL}
+        actions:
+          enabled: true
+          provisioning:
+            enabled: true
         redis-cluster:
           enabled: false
         redis:
