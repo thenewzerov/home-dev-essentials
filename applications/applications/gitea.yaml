@@ -21,6 +21,16 @@ spec:
           enabled: true
           provisioning:
             enabled: true
+          statefulset:
+            actRunner: 
+              config: |
+                log:
+                  level: debug
+                cache:
+                  enabled: false
+                runner:
+                  labels:
+                    - "ubuntu-latest:docker://node:18.20-bullseye"
         redis-cluster:
           enabled: false
         redis:
