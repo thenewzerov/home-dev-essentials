@@ -1,0 +1,13 @@
+# apiVersion: storage.k8s.io/v1
+# kind: StorageClass
+# metadata:
+#   name: nfs-csi-sc
+# provisioner: nfs.csi.k8s.io
+# parameters:
+#   server: <Your NFS Server IP or Hostname>
+#   share: <Applicaiton Share Volume Path>
+# reclaimPolicy: Retain
+# volumeBindingMode: Immediate
+# mountOptions:
+#   - hard
+#   - nfsvers=4.1

@@ -16,7 +16,7 @@ These commands will install MicroK8s and install some of the addons used by this
 
 ```bash
 sudo snap install microk8s --classic
-microk8s enable dn
+microk8s enable dns
 microk8s enable hostpath-storage
 ```
 ## Setting Up Remote Access

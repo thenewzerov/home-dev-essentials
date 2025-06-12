@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: docker-registry-ui
+  namespace: argocd
+spec:
+  project: infra-project
+  source:
+    repoURL: "http://gitea-http.gitea.svc.cluster.local:3000/${APPLICATIONS.GITEA.ADMIN.USERNAME}/infra.git"
+    targetRevision: HEAD
+    path: docker-registry-ui
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: docker-registry-ui
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=false

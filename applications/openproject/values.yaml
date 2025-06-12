@@ -1,0 +1,5 @@
+ingress:
+  enabled: false
+  host: openproject.${APPLICATIONS.GLOBAL.BASE_URL}
+openproject:
+  host: openproject.${APPLICATIONS.GLOBAL.BASE_URL}

@@ -31,6 +31,10 @@ spec:
                 runner:
                   labels:
                     - "ubuntu-latest:docker://node:18.20-bullseye"
+                container:
+                  privileged: true
+                  valid_volumes:
+                    - "**"
         redis-cluster:
           enabled: false
         redis:

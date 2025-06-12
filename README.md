@@ -14,6 +14,12 @@ The configs below work for a home environment where you don't really care if you
 
 I also turn off TLS on EVERYTHING.
 
+## Template Project
+
+There is also a template project located [here](https://github.com/thenewzerov/home-dev-essentials-template)  that is made to build services that work with this project.
+
+Honestly, I'm not a huge fan of this template project.  But it works.
+
 ## What this README Covers:
 
 - [Quickstart](#quickstart)
@@ -237,6 +243,7 @@ tools.example.com
 vault.example.com
 workflows.example.com
 pgadmin.example.com
+docker.example.com
 ```
 
 There's a file that's generated in the `deployments\21-bookmarks` folder that will have links to all the sites, with your configured urls.
@@ -267,6 +274,13 @@ To get the default password to login, run this command:
 ```bash
 kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
 ```
+
+### Gitea and Act Runner
+
+To work with ArgoCD, Gitea is installed.  The initial repo for this project is created and pushed up to the Gitea instance.
+
+As part of this, Gitea's Act Runner has been installed and configured for Docker in Docker as well.
+
 
 ### IT-Tools
 
@@ -335,6 +349,10 @@ To connect NUI to your nats server:
 4. Host is going to be `nats-headless.nats.svc.cluster.local`
 5. No auth other settings needed.
 
+### Docker Registry UI
+
+This gives you a UI for browsing your docker images.  The one we deploy is this one:  https://github.com/Joxit/docker-registry-ui
+
 ### Telemetrygen
 
 There is a sample telemetry generator app that's installed, mostly to test the observability stuff. Feel free to delete it if you don't want it.
@@ -368,7 +386,14 @@ Keycloak will fail to start until you set this up.  But it also forces you to ma
     * Type will be `ClusterRole`
     * Allowed Kubernetes Namespaces set to `*`
 
-4. In the `kubernetes` Authentication Method, add a role.
+4. Create a new `Policy`.  Call it `keycloak`. Add this policy:
+    ```
+    path "/keycloak/data/*" {
+    capabilities = ["read", "list"]
+    }
+    ```
+
+5. In the `kubernetes` Authentication Method, add a role.
     * Name it `keycloak`
     * Audience should be `vault`
     * Bound service account names, add `keycloak`
@@ -376,28 +401,22 @@ Keycloak will fail to start until you set this up.  But it also forces you to ma
     * Under the `Tokens` dropdown, scroll down to `Generated Token's Policies`
     * Add `keycloak-postgres`.  We'll set this up later.
 
-5. Create a new KV Secrets Engine. We'll use the `keycloak` deployment as an example.  Name the Secrets Engine `keycloak`.
+6. Create a new KV Secrets Engine. We'll use the `keycloak` deployment as an example.  Name the Secrets Engine `keycloak`.
 
-6. Create a new `Secret` inside the `keycloak` secrets engine.
+7. Create a new `Secret` inside the `keycloak` secrets engine.
     * Name it `postgres`
     * Add the following secret data to it:
         * POSTGRES_DB
         * POSTGRES_PASSWORD
         * POSTGRES_USER
 
-7. Create a new `Secret` inside the `keycloak` secrets engine.
+8. Create a new `Secret` inside the `keycloak` secrets engine.
     * Name it `keycloak-admin`
     * Add the following secret data to it:
         * KC_BOOTSTRAP_ADMIN_PASSWORD
         * KC_BOOTSTRAP_ADMIN_USERNAME
     * These will be your credentials to login to Keycloak.
 
-8. Create a new `Policy`.  Call it `keycloak-postgres`. Add this policy:
-    ```
-    path "/keycloak/data/*" {
-    capabilities = ["read", "list"]
-    }
-    ```
 9. Finally, create your Service Account, VaultAuth, and VaultStaticSecret.
     * See `/applications/keycloak/secrets.yaml` for an example.
 
@@ -410,14 +429,10 @@ Change values as appropriate.  For the most part, you can use the `/applications
 
 
 ## Wishlist for Future Things to Add (or automate)
-* Gitea Runners
-    https://docs.gitea.com/usage/actions/overview
 * Kubernetes Automated Install
     https://kubernetes.io/
 * Container Repository
     https://hub.docker.com/_/registry
-* Container Registry UI
-    https://github.com/Joxit/docker-registry-ui
 * Package Registry
     TODO:  Pick one
 * Add Cert Manager to Applications.
