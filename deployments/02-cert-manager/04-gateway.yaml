@@ -5,7 +5,7 @@ metadata:
   namespace: istio-system
   annotations:
     networking.istio.io/service-type: "NodePort"
-    cert-manager.io/cluster-issuer: "rack-ca-issuer"
+    cert-manager.io/cluster-issuer: "ca-issuer"
 spec:
   gatewayClassName: istio
   listeners:

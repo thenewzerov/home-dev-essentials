@@ -4,3 +4,4 @@ metadata:
   name: docker-registry-ui
   labels:
     name: docker-registry-ui
+    istio-injection: enabled

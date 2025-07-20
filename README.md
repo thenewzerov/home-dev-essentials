@@ -197,6 +197,8 @@ In the `deployments/01-deploy.ops` file, change the lines to remove the followin
 --set global.platform=microk8s
 ```
 
+UPDATE:  I've added configs for Microk8s and Istio Ambient mode in the configuration.yaml file.  No need to do this anymore.  Hopefully.
+
 ### Deploy the Application
 
 #### Windows
@@ -254,7 +256,7 @@ Not everything installed has a section here. This is mostly just capturing what 
 
 ### Istio
 
-Istio is installed in ambient mode, that way I don't have to deal with sidecars. This is mostly just to try out the ambient mode features.
+Istio is optionally installed in ambient mode, that way I don't have to deal with sidecars. This is mostly just to try out the ambient mode features.
 
 I include the annotations to add all the created namespaces to Istio (unless otherwised noted).
 

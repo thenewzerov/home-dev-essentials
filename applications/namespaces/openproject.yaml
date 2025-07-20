@@ -5,3 +5,4 @@ metadata:
   labels:
     name: openproject
     istio.io/dataplane-mode: ambient
+    istio-injection: enabled

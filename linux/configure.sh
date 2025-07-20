@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 # Check if YQ is installed.  If not, exit with an error message.
 if ! command -v yq &> /dev/null
@@ -77,3 +78,56 @@ done
 
 # Replace instances of './deployments' with './temp/deployments' in the temp/deployments folder.
 find temp -type f -exec sed -i "s|./deployments|./temp/deployments|g" {} +
+
+# Get APPLICATIONS.GLOBAL.MICROK8S value, default to false if not present
+MICROK8S="${config[APPLICATIONS.GLOBAL.MICROK8S]}"
+if [ -z "$MICROK8S" ]; then
+    MICROK8S="false"
+fi
+
+# If MICROK8S is false, remove 'global.platform' and 'value: microk8s' from temp/applications/istio.yaml
+if [ "$MICROK8S" = "false" ]; then
+    if [ -f "temp/applications/istio.yaml" ]; then
+        sed -i '/global.platform/d' temp/applications/istio.yaml
+        sed -i '/value: microk8s/d' temp/applications/istio.yaml
+        echo "Removed global.platform and value: microk8s from temp/applications/istio.yaml."
+    fi
+    # Remove '--set global.platform=microk8s' from deployments/01-istio/01-deploy.ops if microk8s flag is false
+    if [ -f "temp/deployments/01-istio/01-deploy.ops" ]; then
+        sed -i 's/--set global.platform=microk8s//g' temp/deployments/01-istio/01-deploy.ops
+    fi
+fi
+
+# Get APPLICATIONS.ISTIO.AMBIENT value, default to false if not present
+ISTIO_AMBIENT="${config[APPLICATIONS.ISTIO.AMBIENT]}"
+if [ -z "$ISTIO_AMBIENT" ]; then
+    ISTIO_AMBIENT="false"
+fi
+
+# Remove '--set profile=ambient' from deployments/01-istio/01-deploy.ops if ambient flag is false
+if [ "$ISTIO_AMBIENT" = "false" ]; then
+    if [ -f "temp/deployments/01-istio/01-deploy.ops" ]; then
+        sed -i 's/--set profile=ambient//g' temp/deployments/01-istio/01-deploy.ops
+    fi
+
+    # Remove 'istio.io/dataplane-mode: ambient' from all files in temp/applications/namespaces
+    for nsfile in temp/applications/namespaces/*; do
+        if [ -f "$nsfile" ]; then
+            sed -i '/istio.io\/dataplane-mode: ambient/d' "$nsfile"
+        fi
+        done
+
+    # Remove the istio ztunnel installation from temp/deployments/01-istio/01-deploy.ops
+    if [ -f "temp/deployments/01-istio/01-deploy.ops" ]; then
+        sed -i '/ztunnel/d' temp/deployments/01-istio/01-deploy.ops
+    fi
+fi
+
+
+if [ "$ISTIO_AMBIENT" = "true" ]; then
+    # Remove commented lines from temp/applications/istio.yaml
+    if [ -f "temp/applications/istio.yaml" ]; then
+        sed -i '/^#/d' temp/applications/istio.yaml
+        echo "Removed commented lines from temp/applications/istio.yaml."
+    fi
+fi

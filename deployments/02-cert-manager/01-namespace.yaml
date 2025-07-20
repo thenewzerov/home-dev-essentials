@@ -5,3 +5,4 @@ metadata:
   labels:
     name: cert-manager
     istio.io/dataplane-mode: ambient
+    istio-injection: enabled

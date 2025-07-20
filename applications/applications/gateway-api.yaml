@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: gateway-api
+  namespace: argocd
+spec:
+  project: infra-project
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: istio-system
+  source:
+    repoURL: "http://gitea-http.gitea.svc.cluster.local:3000/${APPLICATIONS.GITEA.ADMIN.USERNAME}/infra.git"
+    targetRevision: HEAD
+    path: gateway-api
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

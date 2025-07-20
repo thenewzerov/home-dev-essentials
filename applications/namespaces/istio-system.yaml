@@ -4,3 +4,4 @@ metadata:
   name: istio-system
   labels:
     name: istio-system
+    istio-injection: enabled

@@ -5,3 +5,4 @@ metadata:
   labels:
     name: nats
     istio.io/dataplane-mode: ambient
+    istio-injection: enabled

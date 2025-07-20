@@ -110,14 +110,14 @@ defaults
 	errorfile 503 /etc/haproxy/errors/503.http
 	errorfile 504 /etc/haproxy/errors/504.http
 
-frontend therackhttp 
+frontend samplehttp 
 	bind :80
 	default_backend insecure-backend
 
 backend insecure-backend
 	server k8slocalhttp localhost:31824
 
-frontend therackhttps
+frontend samplehttps
 	bind :443
 	default_backend secure-backend
 

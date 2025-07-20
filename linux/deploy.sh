@@ -3,6 +3,9 @@ set -e
 
 ./linux/configure.sh ./configuration.yaml
 
+# Wait for the user to confirm the configuration is correct
+read -p "Press enter to continue with deployment..."
+
 # Go through every subfolder of the temp/deployments directory
 for dir in temp/deployments/*/; do
     echo "$dir"
