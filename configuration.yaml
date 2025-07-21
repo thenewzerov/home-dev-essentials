@@ -1,9 +1,9 @@
 APPLICATIONS:
   GLOBAL:
     BASE_URL: example
-    MICROK8S: false
+    MICROK8S: "false"
   ISTIO:
-    AMBIENT: false
+    AMBIENT: "false"
   GITEA:
     ADMIN:
       USERNAME: example
