@@ -4,5 +4,3 @@ metadata:
   name: prometheus
   labels:
     name: prometheus
-    istio.io/dataplane-mode: ambient
-    istio-injection: enabled

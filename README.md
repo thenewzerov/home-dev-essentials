@@ -380,6 +380,7 @@ Keycloak will fail to start until you set this up.  But it also forces you to ma
 2. Create a new Authentication Method.
     * Type should be Kubernetes.
     * Being lazy and naming it `kubernetes`
+    * Make sure to set the host for the kubernetes api.
 
 3. Create a `Kubernetes` type secret engine.  Call it `kubernetes`.
     * Create a role in the secrets engine.
@@ -401,7 +402,7 @@ Keycloak will fail to start until you set this up.  But it also forces you to ma
     * Bound service account names, add `keycloak`
     * Bound service account namespaces, add `keycloak`
     * Under the `Tokens` dropdown, scroll down to `Generated Token's Policies`
-    * Add `keycloak-postgres`.  We'll set this up later.
+    * Add `keycloak`.  We'll set this up later.
 
 6. Create a new KV Secrets Engine. We'll use the `keycloak` deployment as an example.  Name the Secrets Engine `keycloak`.
 

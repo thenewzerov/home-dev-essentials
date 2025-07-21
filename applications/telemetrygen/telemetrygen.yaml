@@ -4,7 +4,7 @@ metadata:
   name: telemetrygen-traces
   namespace: telemetrygen
 spec:
-  schedule: "* * * * *"
+  schedule: "0 * * * *"
   jobTemplate:
     spec:
       template:
@@ -30,7 +30,7 @@ metadata:
   name: telemetrygen-metrics
   namespace: telemetrygen
 spec:
-  schedule: "* * * * *"
+  schedule: "0 * * * *"
   jobTemplate:
     spec:
       template:
@@ -56,7 +56,7 @@ metadata:
   name: telemetrygen-logs
   namespace: telemetrygen
 spec:
-  schedule: "* * * * *"
+  schedule: "0 * * * *"
   jobTemplate:
     spec:
       template:

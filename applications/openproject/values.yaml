@@ -1,5 +1,14 @@
+develop: true
 ingress:
   enabled: false
-  host: openproject.${APPLICATIONS.GLOBAL.BASE_URL}
+  host: openproject.the-rack.thenewzerov.com
 openproject:
-  host: openproject.${APPLICATIONS.GLOBAL.BASE_URL}
+  host: openproject.the-rack.thenewzerov.com
+postgresql:
+  bundled: false
+  connection:
+    host: openproject-postgres
+    port: 5432
+  auth:
+    secretKeys:
+      userPasswordKey: password

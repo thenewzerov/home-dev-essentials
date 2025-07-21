@@ -5,12 +5,11 @@ metadata:
   namespace: openproject
 spec:
   parentRefs:
-    - group: gateway.networking.k8s.io	
-      kind: Gateway	
-      name: infra-gateway
+  parentRefs:
+    - name: infra-gateway
       namespace: istio-system
   hostnames:
-    - openproject.${APPLICATIONS.GLOBAL.BASE_URL}
+    - openproject.the-rack.thenewzerov.com
   rules:
     - matches:
         - path:

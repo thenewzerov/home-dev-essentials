@@ -87,12 +87,14 @@ fi
 
 # If MICROK8S is false, remove 'global.platform' and 'value: microk8s' from temp/applications/istio.yaml
 if [ "$MICROK8S" = "false" ]; then
+    echo "Removing microk8s configurations from temp/applications/istio.yaml."
     if [ -f "temp/applications/istio.yaml" ]; then
         sed -i '/global.platform/d' temp/applications/istio.yaml
         sed -i '/value: microk8s/d' temp/applications/istio.yaml
         echo "Removed global.platform and value: microk8s from temp/applications/istio.yaml."
     fi
     # Remove '--set global.platform=microk8s' from deployments/01-istio/01-deploy.ops if microk8s flag is false
+    echo "Removing microk8s from deployment ops."
     if [ -f "temp/deployments/01-istio/01-deploy.ops" ]; then
         sed -i 's/--set global.platform=microk8s//g' temp/deployments/01-istio/01-deploy.ops
     fi
@@ -106,12 +108,20 @@ fi
 
 # Remove '--set profile=ambient' from deployments/01-istio/01-deploy.ops if ambient flag is false
 if [ "$ISTIO_AMBIENT" = "false" ]; then
+    echo "Removing istio ambient configurations."
     if [ -f "temp/deployments/01-istio/01-deploy.ops" ]; then
         sed -i 's/--set profile=ambient//g' temp/deployments/01-istio/01-deploy.ops
     fi
 
     # Remove 'istio.io/dataplane-mode: ambient' from all files in temp/applications/namespaces
     for nsfile in temp/applications/namespaces/*; do
+        if [ -f "$nsfile" ]; then
+            sed -i '/istio.io\/dataplane-mode: ambient/d' "$nsfile"
+        fi
+        done
+
+    # Remove 'istio.io/dataplane-mode: ambient' from all files in temp/deployments
+    for nsfile in temp/deployments/*; do
         if [ -f "$nsfile" ]; then
             sed -i '/istio.io\/dataplane-mode: ambient/d' "$nsfile"
         fi

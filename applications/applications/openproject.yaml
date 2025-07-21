@@ -18,10 +18,7 @@ spec:
     ref: values
   - repoURL: 'http://gitea-http.gitea.svc.cluster.local:3000/${APPLICATIONS.GITEA.ADMIN.USERNAME}/infra.git'
     targetRevision: HEAD
-    path: openproject/routes
-  - repoURL: 'http://gitea-http.gitea.svc.cluster.local:3000/${APPLICATIONS.GITEA.ADMIN.USERNAME}/infra.git'
-    targetRevision: HEAD
-    path: openproject/istio
+    path: openproject/deployment
   destination:
     server: https://kubernetes.default.svc
     namespace: openproject
