@@ -4,7 +4,7 @@ metadata:
   name: "tempo"
   namespace: argocd
 spec:
-  project: infra-project
+  project: infra
   sources:
   - repoURL: 'https://grafana.github.io/helm-charts'
     chart: tempo

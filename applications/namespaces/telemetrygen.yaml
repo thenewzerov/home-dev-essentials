@@ -4,5 +4,3 @@ metadata:
   name: telemetrygen
   labels:
     name: telemetrygen
-    istio.io/dataplane-mode: ambient
-    istio-injection: enabled

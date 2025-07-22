@@ -4,7 +4,7 @@ metadata:
   name: gitea
   namespace: argocd
 spec:
-  project: infra-project
+  project: infra
   source:
     repoURL: "https://dl.gitea.com/charts/"
     chart: "gitea"

@@ -1,16 +1,17 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: "telemetry-generator"
+  name: projects
   namespace: argocd
 spec:
   project: infra
   source:
     repoURL: "http://gitea-http.gitea.svc.cluster.local:3000/${APPLICATIONS.GITEA.ADMIN.USERNAME}/infra.git"
     targetRevision: HEAD
-    path: telemetrygen
+    path: projects
   destination:
     server: https://kubernetes.default.svc
+    namespace: argocd
   syncPolicy:
     automated:
       prune: true

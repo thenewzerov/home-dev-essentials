@@ -4,7 +4,7 @@ metadata:
   name: gitea
   namespace: argocd
 spec:
-  project: infra-project
+  project: infra
   sources:
   - repoURL: "https://dl.gitea.com/charts/"
     chart: "gitea"
@@ -30,7 +30,7 @@ spec:
                   enabled: false
                 runner:
                   labels:
-                    - "ubuntu-latest:docker://node:18.20-bullseye"
+                    - "cluster:docker://node:18.20-bullseye"
                 container:
                   privileged: true
                   valid_volumes:

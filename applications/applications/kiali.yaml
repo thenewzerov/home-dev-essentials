@@ -4,7 +4,7 @@ metadata:
   name: "kiali"
   namespace: argocd
 spec:
-  project: infra-project
+  project: infra
   sources:
   - repoURL: 'https://kiali.org/helm-charts'
     chart: kiali-server

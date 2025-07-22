@@ -4,7 +4,7 @@ metadata:
   name: gateway-api
   namespace: argocd
 spec:
-  project: infra-project
+  project: infra
   destination:
     server: https://kubernetes.default.svc
     namespace: istio-system

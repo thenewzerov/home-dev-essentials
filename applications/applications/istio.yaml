@@ -4,7 +4,7 @@ metadata:
   name: istio
   namespace: argocd
 spec:
-  project: infra-project
+  project: infra
   destination:
     server: https://kubernetes.default.svc
     namespace: istio-system
@@ -22,32 +22,29 @@ spec:
       chart: istiod
       targetRevision: 1.26.2
       helm:
-        parameters:
+        values: |
+          global:
+            platform: microk8s
+          pilot:
+            env:
+              PILOT_ENABLE_ALPHA_GATEWAY_API: "true"
+          meshConfig:
+            extensionProviders:
+              - name: otel-tracing
+                opentelemetry:
+                  service: alloy.alloy.svc.cluster.local
+                  port: 4317
+    # - repoURL: https://istio-release.storage.googleapis.com/charts
+    #   chart: cni
+    #   targetRevision: 1.26.2
+    #   helm:
+    #     parameters:
           # - name: profile
           #   value: ambient
-          - name: global.platform
-            value: microk8s
-          - name: pilot.env.PILOT_ENABLE_ALPHA_GATEWAY_API
-            value: "true"
-          - name: meshConfig.enableTracing
-            value: "true"
-          - name: meshConfig.extensionProviders.name
-            value: otel-tracing
-          - name: meshConfig.extensionProviders.opentelemetry.service
-            value: alloy.alloy.svc.cluster.local
-          - name: meshConfig.extensionProviders.opentelemetry.port
-            value: "4317"
-    - repoURL: https://istio-release.storage.googleapis.com/charts
-      chart: cni
-      targetRevision: 1.26.2
-      helm:
-        parameters:
-          # - name: profile
-          #   value: ambient
-          - name: global.platform
-            value: microk8s
-          - name: pilot.env.PILOT_ENABLE_ALPHA_GATEWAY_API
-            value: "true"
+          # - name: global.platform
+          #   value: microk8s
+          # - name: pilot.env.PILOT_ENABLE_ALPHA_GATEWAY_API
+          #   value: "true"
     # - repoURL: https://istio-release.storage.googleapis.com/charts
     #   chart: ztunnel
     #   targetRevision: 1.26.2
