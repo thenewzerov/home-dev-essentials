@@ -1,4 +1,4 @@
-﻿# Home Dev Essentials
+# Home Dev Essentials
 
 This is a collection of tools and setup scripts to make setting up a home Kubernetes dev environment as painless as possible.
 

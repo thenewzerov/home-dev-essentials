@@ -1,4 +1,4 @@
-﻿grafana:
+grafana:
   grafana.ini:
     users:
       viewers_can_edit: true

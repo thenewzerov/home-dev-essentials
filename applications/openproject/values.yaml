@@ -1,4 +1,4 @@
-﻿develop: true
+develop: true
 ingress:
   enabled: false
   host: openproject.the-rack.thenewzerov.com

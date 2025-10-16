@@ -1,4 +1,4 @@
-﻿# Bookmarks
+# Bookmarks
 
 Here's a handy file with links to all the sites you need to bookmark in your new Kubernetes cluster!
 

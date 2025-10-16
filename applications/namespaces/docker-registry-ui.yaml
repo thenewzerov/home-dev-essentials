@@ -1,7 +1,7 @@
-﻿apiVersion: v1
+apiVersion: v1
 kind: Namespace
 metadata:
   name: docker-registry-ui
   labels:
     name: docker-registry-ui
-    istio-injection: enabled
+    

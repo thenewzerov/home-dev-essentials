@@ -1,1 +1,1 @@
-﻿kubectl patch service -n istio-system infra-gateway-istio --patch-file .\deployments\02-cert-manager\gateway-service.patch
+kubectl patch service -n istio-system infra-gateway-istio --patch-file .\deployments\02-cert-manager\gateway-service.patch

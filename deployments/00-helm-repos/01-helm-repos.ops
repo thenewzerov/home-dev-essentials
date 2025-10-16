@@ -1,4 +1,9 @@
-﻿helm repo add istio https://istio-release.storage.googleapis.com/charts
+#!/bin/bash
+set -e
+
+echo "Adding Helm repositories..."
+
+helm repo add istio https://istio-release.storage.googleapis.com/charts
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo add jetstack https://charts.jetstack.io
 helm repo add grafana https://grafana.github.io/helm-charts
@@ -8,4 +13,8 @@ helm repo add nats https://nats-io.github.io/k8s/helm/charts/
 helm repo add nats-nui https://nats-nui.github.io/k8s/helm/charts
 helm repo add openproject https://charts.openproject.org
 helm repo add kiali https://kiali.org/helm-charts
+
+echo "Updating Helm repositories..."
 helm repo update
+
+echo "✅ Helm repositories configured successfully"

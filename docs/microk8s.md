@@ -1,4 +1,4 @@
-﻿## Running with MicroK8s
+## Running with MicroK8s
 
 Because there's a bunch of stuff I'm going to forget if I don't write it down, here's how to set up UFW to allow MicroK8s forwarding and HAProxy.
 

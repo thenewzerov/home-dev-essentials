@@ -1,4 +1,4 @@
-﻿apiVersion: v1
+apiVersion: v1
 kind: ServiceAccount
 metadata:
   # SA bound to the VSO namespace for transit engine auth

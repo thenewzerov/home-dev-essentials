@@ -1,4 +1,4 @@
-﻿auth:
+auth:
   strategy: anonymous
 
 external_services:

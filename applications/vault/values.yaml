@@ -1,4 +1,4 @@
-﻿global:
+global:
   tlsDisable: true
 metrics:
   enabled: true

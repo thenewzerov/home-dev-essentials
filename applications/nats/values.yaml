@@ -1,4 +1,4 @@
-﻿global:
+global:
   labels:
     app.kubernetes.io/name: nats-ui
     app.kubernetes.io/version: 0.51.0
