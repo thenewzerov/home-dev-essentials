@@ -1,4 +1,4 @@
-#!/bin/bash
+﻿#!/bin/bash
 
 # URL to check
 URL="https://gitea.${APPLICATIONS_GLOBAL_BASE_URL}"

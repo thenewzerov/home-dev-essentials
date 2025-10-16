@@ -1,4 +1,4 @@
-apiVersion: "security.istio.io/v1"
+﻿apiVersion: "security.istio.io/v1"
 kind: "PeerAuthentication"
 metadata:
   name: "gitea-postgres"

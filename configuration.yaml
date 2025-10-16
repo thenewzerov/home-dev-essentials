@@ -1,4 +1,4 @@
-APPLICATIONS:
+﻿APPLICATIONS:
   GLOBAL:
     BASE_URL: example
     MICROK8S: "false"

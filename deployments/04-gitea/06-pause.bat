@@ -1,4 +1,4 @@
-@echo off
+﻿@echo off
 
 REM Time to wait between checks (in seconds)
 set WAIT_TIME=10

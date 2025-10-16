@@ -1,4 +1,4 @@
-alloy:
+﻿alloy:
   configMap:
     create: false
     name: alloy-config

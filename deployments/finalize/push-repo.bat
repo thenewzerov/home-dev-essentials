@@ -1,4 +1,4 @@
-@echo off
+﻿@echo off
 setlocal
 
 REM Change to the temp/infra directory
