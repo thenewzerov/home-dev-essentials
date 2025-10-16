@@ -8,40 +8,19 @@ spec:
   sources:
   - repoURL: "https://dl.gitea.com/charts/"
     chart: "gitea"
-    targetRevision: 10.6.0  # Specify the version of the Helm chart
+    targetRevision: 12.4.0  # Specify the version of the Helm chart
     helm:
       values: |
         gitea:
           admin:
             existingSecret: gitea-admin-secret
-          config:
-            server:
-              ROOT_URL: https://gitea.${APPLICATIONS.GLOBAL.BASE_URL}
-        actions:
-          enabled: true
-          provisioning:
-            enabled: true
-          statefulset:
-            actRunner: 
-              config: |
-                log:
-                  level: debug
-                cache:
-                  enabled: false
-                runner:
-                  labels:
-                    - "cluster:docker://node:18.20-bullseye"
-                container:
-                  privileged: true
-                  valid_volumes:
-                    - "**"
-        redis-cluster:
-          enabled: false
-        redis:
-          enabled: true
         postgresql-ha:
           enabled: false
         postgresql:
+          enabled: true
+        valkey-cluster:
+          enabled: false
+        valkey:
           enabled: true
   - repoURL: 'http://gitea-http.gitea.svc.cluster.local:3000/${APPLICATIONS.GITEA.ADMIN.USERNAME}/infra.git'
     targetRevision: HEAD

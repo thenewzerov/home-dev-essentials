@@ -8,19 +8,19 @@ spec:
   source:
     repoURL: "https://dl.gitea.com/charts/"
     chart: "gitea"
-    targetRevision: 10.6.0  # Specify the version of the Helm chart
+    targetRevision: 12.4.0  # Specify the version of the Helm chart
     helm:
       values: |
         gitea:
           admin:
             existingSecret: gitea-admin-secret
-        redis-cluster:
-          enabled: false
-        redis:
-          enabled: true
         postgresql-ha:
           enabled: false
         postgresql:
+          enabled: true
+        valkey-cluster:
+          enabled: false
+        valkey:
           enabled: true
   destination:
     server: https://kubernetes.default.svc

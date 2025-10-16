@@ -1,0 +1,4 @@
+kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.4.0/standard-install.yaml
+helm upgrade --install istio-base istio/base -n istio-system --create-namespace --wait
+helm upgrade --install istio-cni istio/cni -n istio-system --wait
+helm upgrade --install istiod istio/istiod --namespace istio-system --wait
