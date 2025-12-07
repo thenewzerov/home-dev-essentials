@@ -13,6 +13,7 @@ helm repo add nats https://nats-io.github.io/k8s/helm/charts/
 helm repo add nats-nui https://nats-nui.github.io/k8s/helm/charts
 helm repo add openproject https://charts.openproject.org
 helm repo add kiali https://kiali.org/helm-charts
+helm repo add gitlab https://charts.gitlab.io/
 
 echo "Updating Helm repositories..."
 helm repo update

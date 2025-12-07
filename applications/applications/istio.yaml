@@ -9,51 +9,6 @@ spec:
     server: https://kubernetes.default.svc
     namespace: istio-system
   sources:
-    - repoURL: https://istio-release.storage.googleapis.com/charts
-      chart: base
-      targetRevision: 1.26.2
-      helm:
-        parameters:
-        - name: global.platform
-          value: microk8s
-        - name: pilot.env.PILOT_ENABLE_ALPHA_GATEWAY_API
-          value: "true"
-    - repoURL: https://istio-release.storage.googleapis.com/charts
-      chart: istiod
-      targetRevision: 1.26.2
-      helm:
-        values: |
-          global:
-            platform: microk8s
-          pilot:
-            env:
-              PILOT_ENABLE_ALPHA_GATEWAY_API: "true"
-          meshConfig:
-            extensionProviders:
-              - name: otel-tracing
-                opentelemetry:
-                  service: alloy.alloy.svc.cluster.local
-                  port: 4317
-    # - repoURL: https://istio-release.storage.googleapis.com/charts
-    #   chart: cni
-    #   targetRevision: 1.26.2
-    #   helm:
-    #     parameters:
-          # - name: profile
-          #   value: ambient
-          # - name: global.platform
-          #   value: microk8s
-          # - name: pilot.env.PILOT_ENABLE_ALPHA_GATEWAY_API
-          #   value: "true"
-    # - repoURL: https://istio-release.storage.googleapis.com/charts
-    #   chart: ztunnel
-    #   targetRevision: 1.26.2
-    #   helm:
-    #     parameters:
-    #       - name: global.platform
-    #         value: microk8s
-    #       - name: pilot.env.PILOT_ENABLE_ALPHA_GATEWAY_API
-    #         value: "true"
     - repoURL: "http://gitea-http.gitea.svc.cluster.local:3000/${APPLICATIONS.GITEA.ADMIN.USERNAME}/infra.git"
       targetRevision: HEAD
       path: istio
@@ -63,3 +18,4 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
+      - ServerSideApply=true

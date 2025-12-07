@@ -4,4 +4,4 @@ metadata:
   name: argocd
   labels:
     name: argocd
-    istio-injection: enabled
+    istio-injection: disabled
