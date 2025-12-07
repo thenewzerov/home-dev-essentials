@@ -4,3 +4,10 @@ metadata:
   name: vault
   labels:
     name: vault
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: vault-secrets-operator
+  labels:
+    name: vault-secrets-operator
