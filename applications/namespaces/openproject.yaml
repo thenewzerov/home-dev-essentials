@@ -4,4 +4,4 @@ metadata:
   name: openproject
   labels:
     name: openproject
-    istio.io/dataplane-mode: ambient
+    

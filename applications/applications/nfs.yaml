@@ -12,9 +12,6 @@ spec:
     - chart: csi-driver-nfs
       repoURL: https://raw.githubusercontent.com/kubernetes-csi/csi-driver-nfs/master/charts
       targetRevision: 4.11.0
-      helm:
-        values: |
-          kubeletDir: /var/snap/microk8s/common/var/lib/kubelet
     - repoURL: 'http://gitea-http.gitea.svc.cluster.local:3000/${APPLICATIONS.GITEA.ADMIN.USERNAME}/infra.git'
       targetRevision: HEAD
       path: nfs

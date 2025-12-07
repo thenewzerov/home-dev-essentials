@@ -4,5 +4,5 @@ metadata:
   name: ittools
   labels:
     name: ittools
-    istio.io/dataplane-mode: ambient
-    istio-injection: enabled
+    
+    

@@ -1,0 +1,8 @@
+mirrors:
+  "registry.yourdomain.com":
+    endpoint:
+      - "http://registry.yourdomain.com:5000"
+configs:
+  "registry.yourdomain.com":
+    tls:
+      insecure_skip_verify: true

@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kube-dash-proxy
+  namespace: kubernetes-dashboard
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kube-dash-proxy
+  template:
+    metadata:
+      labels:
+        app: kube-dash-proxy
+    spec:
+      containers:
+      - name: kube-dash-proxy
+        image: registry.${APPLICATIONS.GLOBAL.BASE_URL}/kube-dash-proxy
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+        env:
+        - name: K8S_ADMIN_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: admin-user
+              key: token
+        - name: BACKEND_SERVER
+          value: kubernetes-dashboard-kong-proxy:443
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kube-dash-proxy
+  namespace: kubernetes-dashboard
+spec:
+  selector:
+    app: kube-dash-proxy
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80

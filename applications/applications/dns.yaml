@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: dns
+  namespace: argocd
+spec:
+  project: infra
+  source:
+    repoURL: "http://gitea-http.gitea.svc.cluster.local:3000/${APPLICATIONS.GITEA.ADMIN.USERNAME}/infra.git"
+    targetRevision: HEAD
+    path: dns
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=false

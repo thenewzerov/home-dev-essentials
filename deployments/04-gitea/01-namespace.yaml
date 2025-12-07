@@ -4,3 +4,4 @@ metadata:
   name: gitea
   labels:
     name: gitea
+    istio-injection: disabled

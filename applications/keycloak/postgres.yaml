@@ -42,7 +42,7 @@ spec:
           privileged: false
         volumeMounts:
         - name: postgres-storage
-          mountPath: /var/lib/postgresql/data
+          mountPath: /var/lib/postgresql
         resources:
             limits:
               memory: 512Mi

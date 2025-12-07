@@ -4,5 +4,5 @@ metadata:
   name: workflows
   labels:
     name: workflows
-    istio.io/dataplane-mode: ambient
-    istio-injection: enabled
+    
+    

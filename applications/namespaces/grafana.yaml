@@ -4,5 +4,5 @@ metadata:
   name: grafana
   labels:
     name: grafana
-    istio.io/dataplane-mode: ambient
-    istio-injection: enabled
+    
+    
