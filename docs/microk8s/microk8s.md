@@ -63,3 +63,12 @@ If you need a reverse proxy to map standard ports 80/443 to the Istio Gateway No
 
 - [HAProxy Setup](haproxy-setup.md) - For HAProxy configuration
 - [Nginx Proxy Setup](nginx-proxy-setup.md) - For Nginx configuration
+
+## Other Add-ons
+
+Some of the other features you might want to setup with Microk8s, or at least look into:
+
+* helm
+* registry
+
+Honestly, there's a ton.  A lot of the really good ones I'm already taking care of for you (dashboard, argocd, etc...)
