@@ -32,9 +32,10 @@ echo.
 echo [01-istio] Deploying Istio service mesh...
 
 kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.4.0/standard-install.yaml
-helm upgrade --install istio-base istio/base -n istio-system --create-namespace --wait
-helm upgrade --install istio-cni istio/cni -n istio-system --wait
-helm upgrade --install istiod istio/istiod --namespace istio-system --wait
+helm upgrade --install istio-base istio/base -n istio-system --create-namespace ${APPLICATIONS.ISTIO.GLOBAL.PLATFORM.SETARG} --wait
+helm upgrade --install istio-cni istio/cni -n istio-system ${APPLICATIONS.ISTIO.GLOBAL.PLATFORM.SETARG} ${APPLICATIONS.ISTIO.CNI.CHAINED.SETARG} --wait
+helm upgrade --install istiod istio/istiod --namespace istio-system ${APPLICATIONS.ISTIO.GLOBAL.PLATFORM.SETARG} ${APPLICATIONS.ISTIO.AMBIENT.ISTIOD.SETARG} --set pilot.env.PILOT_ENABLE_ALPHA_GATEWAY_API=true --wait
+${APPLICATIONS.ISTIO.AMBIENT.ZTUNNEL.COMMAND}
 
 REM ======================================
 REM 02-cert-manager
@@ -46,7 +47,7 @@ REM 01-namespace.yaml
 kubectl apply -f temp\deployments\02-cert-manager\01-namespace.yaml
 
 REM 02-deploy.ops
-helm upgrade --install cert-manager -n cert-manager jetstack/cert-manager --set crds.enabled=true --set config.apiVersion="controller.config.cert-manager.io/v1alpha1" --set config.kind="ControllerConfiguration" --set config.enableGatewayAPI=true
+helm upgrade --install cert-manager -n cert-manager jetstack/cert-manager --wait --timeout 10m --set crds.enabled=true --set-string startupapicheck.podAnnotations.sidecar\.istio\.io/inject=false --set config.apiVersion="controller.config.cert-manager.io/v1alpha1" --set config.kind="ControllerConfiguration" --set config.enableGatewayAPI=true
 
 REM 03-selfsigned.yaml
 kubectl apply -f temp\deployments\02-cert-manager\03-selfsigned.yaml

@@ -60,27 +60,20 @@ echo   Processing configuration substitutions...
 REM Copy deployments.bat to temp first
 copy deployments\deployments.bat temp\deployments.bat >nul
 
-REM Build replacements hashtable and process all files including deployment script
-set "ps_cmd=$replacements = @{}; "
-
-for /f "tokens=1,2 delims=:" %%a in (configuration.cfg) do (
+REM Print configuration values (including blanks) for visibility
+for /f "usebackq tokens=1,* delims=:" %%a in ("configuration.cfg") do (
     set "key=%%a"
     set "value=%%b"
 
     REM Trim spaces
     for /f "tokens=* delims= " %%x in ("!key!") do set "key=%%x"
     for /f "tokens=* delims= " %%x in ("!value!") do set "value=%%x"
-    
-    echo     ${!key!} = !value!
-    
-    REM Add to PowerShell hashtable with both ${} and %% syntax, escaping single quotes
-    set "escaped_value=!value:'=''!"
-    set "ps_cmd=!ps_cmd!$replacements['${!key!}'] = '!escaped_value!'; "
-    set "ps_cmd=!ps_cmd!$replacements['%%!key!%%'] = '!escaped_value!'; "
+
+    if not "!key!"=="" echo     ${!key!} = !value!
 )
 
-REM Execute PowerShell to replace variables in all temp files including deployments.bat
-powershell -ExecutionPolicy Bypass -Command "%ps_cmd% Get-ChildItem -Path 'temp' -Recurse -File | ForEach-Object { try { $content = Get-Content $_.FullName -Raw -ErrorAction Stop; $modified = $content; foreach ($key in $replacements.Keys) { $modified = $modified -replace [regex]::Escape($key), $replacements[$key] }; if ($modified -ne $content) { Set-Content -Path $_.FullName -Value $modified -NoNewline } } catch { } }"
+REM Execute PowerShell substitution script (handles blank values safely)
+powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0scripts\template-substitute.ps1" -RootPath "temp" -ConfigPath "configuration.cfg"
 
 echo   Configuration substitutions completed
 
