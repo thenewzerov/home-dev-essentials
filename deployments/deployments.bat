@@ -55,6 +55,20 @@ kubectl apply -f temp\deployments\02-cert-manager\03-selfsigned.yaml
 REM 04-gateway.yaml
 kubectl apply -f temp\deployments\02-cert-manager\04-gateway.yaml
 
+REM Wait for infra-gateway-istio service to exist before patching it
+echo Waiting for infra-gateway-istio service to be created...
+for /l %%i in (1,1,60) do (
+    kubectl get service infra-gateway-istio -n istio-system > nul 2>&1
+    if not errorlevel 1 (
+        echo infra-gateway-istio service found!
+        goto gateway_ready
+    )
+    echo infra-gateway-istio service not ready yet, waiting 5 seconds... ^(attempt %%i/60^)
+    timeout /t 5 > nul
+)
+echo Warning: infra-gateway-istio service not found after 5 minutes, continuing anyway...
+:gateway_ready
+
 REM 05-patch.ops
 kubectl patch service -n istio-system infra-gateway-istio --patch-file temp\deployments\02-cert-manager\gateway-service.patch
 
