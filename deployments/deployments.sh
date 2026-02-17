@@ -35,9 +35,10 @@ echo ""
 echo "[01-istio] Deploying Istio service mesh..."
 
 kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.4.0/standard-install.yaml
-helm upgrade --install istio-base istio/base -n istio-system --create-namespace --wait
-helm upgrade --install istio-cni istio/cni -n istio-system --wait
-helm upgrade --install istiod istio/istiod --namespace istio-system --wait
+helm upgrade --install istio-base istio/base -n istio-system --create-namespace ${APPLICATIONS.ISTIO.GLOBAL.PLATFORM.SETARG} --wait
+helm upgrade --install istio-cni istio/cni -n istio-system ${APPLICATIONS.ISTIO.GLOBAL.PLATFORM.SETARG} ${APPLICATIONS.ISTIO.CNI.CHAINED.SETARG} --wait
+helm upgrade --install istiod istio/istiod --namespace istio-system ${APPLICATIONS.ISTIO.GLOBAL.PLATFORM.SETARG} ${APPLICATIONS.ISTIO.AMBIENT.ISTIOD.SETARG} --set pilot.env.PILOT_ENABLE_ALPHA_GATEWAY_API=true --wait
+${APPLICATIONS.ISTIO.AMBIENT.ZTUNNEL.COMMAND}
 
 # ======================================
 # 02-cert-manager
@@ -49,13 +50,31 @@ echo "[02-cert-manager] Deploying certificate management..."
 kubectl apply -f temp/deployments/02-cert-manager/01-namespace.yaml
 
 # 02-deploy.ops
-helm upgrade --install cert-manager -n cert-manager jetstack/cert-manager --set crds.enabled=true --set config.apiVersion="controller.config.cert-manager.io/v1alpha1" --set config.kind="ControllerConfiguration" --set config.enableGatewayAPI=true
+helm upgrade --install cert-manager -n cert-manager jetstack/cert-manager --wait --timeout 10m --set crds.enabled=true --set-string startupapicheck.podAnnotations.sidecar\\.istio\\.io/inject=false --set config.apiVersion="controller.config.cert-manager.io/v1alpha1" --set config.kind="ControllerConfiguration" --set config.enableGatewayAPI=true
 
 # 03-selfsigned.yaml
 kubectl apply -f temp/deployments/02-cert-manager/03-selfsigned.yaml
 
 # 04-gateway.yaml
 kubectl apply -f temp/deployments/02-cert-manager/04-gateway.yaml
+
+# Wait for infra-gateway-istio service to exist before patching it
+echo "Waiting for infra-gateway-istio service to be created..."
+gateway_wait_max_attempts=60
+for ((i=1; i<=gateway_wait_max_attempts; i++)); do
+    if kubectl get service infra-gateway-istio -n istio-system >/dev/null 2>&1; then
+        echo "infra-gateway-istio service found!"
+        break
+    fi
+
+    if [ "$i" -eq "$gateway_wait_max_attempts" ]; then
+        echo "Warning: infra-gateway-istio service not found after $((gateway_wait_max_attempts*5)) seconds, continuing anyway..."
+        break
+    fi
+
+    echo "infra-gateway-istio service not ready yet, waiting 5 seconds... (attempt ${i}/${gateway_wait_max_attempts})"
+    sleep 5
+done
 
 # 05-patch.ops
 kubectl patch service -n istio-system infra-gateway-istio --patch-file temp/deployments/02-cert-manager/gateway-service.patch

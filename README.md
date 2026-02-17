@@ -231,7 +231,9 @@ Variables use the format `APPLICATIONS.SERVICE.KEY` (e.g., `APPLICATIONS.GITEA.A
 
 Istio can be configured for MicroK8s and Ambient mode via the configuration file:
 - `APPLICATIONS.GLOBAL.MICROK8S: true/false` - Enable MicroK8s-specific settings
-- `APPLICATIONS.ISTIO.AMBIENT: true/false` - Enable Istio Ambient mode (sidcar-less service mesh)
+- `APPLICATIONS.ISTIO.AMBIENT: true/false` - Enable Istio Ambient mode (sidecar-less service mesh)
+- `APPLICATIONS.ISTIO.GLOBAL.PLATFORM: <string>|none` - Sets Helm `--set global.platform=...` for Istio charts (blank/`none` omits the flag; supports any Istio-supported platform value)
+- `APPLICATIONS.ISTIO.CNI.CHAINED: true|false|none` - Sets Helm `--set chained=...` for the Istio CNI chart (blank/`none` omits the flag)
 
 ### Deploy the Application
 

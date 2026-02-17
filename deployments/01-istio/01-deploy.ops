@@ -1,4 +1,5 @@
 kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.4.0/standard-install.yaml
-helm upgrade --install istio-base istio/base -n istio-system --create-namespace --set global.platform=k3s --wait
-helm upgrade --install istio-cni istio/cni -n istio-system --set global.platform=k3s --wait
-helm upgrade --install istiod istio/istiod --namespace istio-system --set global.platform=k3s --set pilot.env.PILOT_ENABLE_ALPHA_GATEWAY_API=true --wait
+helm upgrade --install istio-base istio/base -n istio-system --create-namespace ${APPLICATIONS.ISTIO.GLOBAL.PLATFORM.SETARG} --wait
+helm upgrade --install istio-cni istio/cni -n istio-system ${APPLICATIONS.ISTIO.GLOBAL.PLATFORM.SETARG} ${APPLICATIONS.ISTIO.CNI.CHAINED.SETARG} --wait
+helm upgrade --install istiod istio/istiod --namespace istio-system ${APPLICATIONS.ISTIO.GLOBAL.PLATFORM.SETARG} ${APPLICATIONS.ISTIO.AMBIENT.ISTIOD.SETARG} --set pilot.env.PILOT_ENABLE_ALPHA_GATEWAY_API=true --wait
+${APPLICATIONS.ISTIO.AMBIENT.ZTUNNEL.COMMAND}
